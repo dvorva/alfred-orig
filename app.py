@@ -51,7 +51,7 @@ def webhook():
 
     except Exception, e:
         log("ERROR: " + str(e)
-        return "fatal", 400
+        return "internal server error", 500
 
 def get_response(input_command, sender_id):
     input_command = input_command.lower()
