@@ -8,7 +8,7 @@ from flask import Flask, request
 app = Flask(__name__)
 
 #https://blog.hartleybrody.com/fb-messenger-bot/
-
+#https://alfred-heroku.herokuapp.com/
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -40,19 +40,55 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    send_message(sender_id, "got it, thanks!")
+                    response = get_response(text)
+                    send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
-
                 if messaging_event.get("optin"):  # optin confirmation
                     pass
-
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
                     pass
 
     return "ok", 200
 
+def get_response(input_command):
+    input_command = input_command.lower()
+    if(input_command == "turn light on"):
+        return "I've turned your lights on."
+
+    elif(input_command == "turn light off"):
+        return "I've turned your lights off."
+
+    elif(input_command == "is my light on"):
+        if True:
+            return "Yes, your light is on."
+        else:
+            return "No, your light is off."
+
+    elif(input_command == "turn light off"):
+        if True:
+            return "Yes, your light is off."
+        else:
+            return "No, your light is on."
+
+    elif(input_command == "dim my light"):
+        return "Your light has been dimmed 50%."
+
+    elif(input_command == "brighten my light"):
+        preturn "Your light has been brightened 50%."
+
+    elif(input_command == "is there motion"):
+        if True:
+            return "Yes, I detected motion recently."
+        else:
+            return "No, I have not detected motion recently."
+
+    elif(input_command == "send camera screenshot"):
+        preturn "Your light has been brightened 50%."
+
+    else:
+        return "Sorry, I didn't recognize your request."
 
 def send_message(recipient_id, message_text):
 
