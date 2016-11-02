@@ -86,7 +86,7 @@ def get_response(input_command, sender_id):
 
     elif(input_command == "send camera screenshot"):
         send_picture_message(sender_id)
-        return "Your light has been brightened by 50%."
+        return "Here is a picture from your camera."
 
     else:
         return "Sorry, I didn't recognize your request."
@@ -129,8 +129,12 @@ def send_picture_message(recipient_id):
             "id": recipient_id
         },
         "message": {
-            "type": "image",
-            "payload.url": "thepic.jpeg"
+            "attachment":{
+                "type": "image",
+                "payload":{
+                    "url": "thepic.jpeg"
+                }
+            }
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
