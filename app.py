@@ -87,7 +87,6 @@ def get_response(input_command, sender_id):
     elif(input_command == "send camera screenshot"):
         send_picture_message(sender_id)
         return "Here is a picture from your camera."
-
     else:
         return "Sorry, I didn't recognize your request."
 
@@ -132,7 +131,7 @@ def send_picture_message(recipient_id):
             "attachment":{
                 "type": "image",
                 "payload":{
-                    "url": "thepic.jpeg"
+                    "url": "/app/thepic.jpeg"
                 }
             }
         }
