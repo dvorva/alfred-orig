@@ -76,7 +76,7 @@ def get_response(input_command):
         return "Your light has been dimmed 50%."
 
     elif(input_command == "brighten my light"):
-        preturn "Your light has been brightened 50%."
+        return "Your light has been brightened 50%."
 
     elif(input_command == "is there motion"):
         if True:
