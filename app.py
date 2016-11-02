@@ -85,7 +85,7 @@ def get_response(input_command):
             return "No, I have not detected motion recently."
 
     elif(input_command == "send camera screenshot"):
-        preturn "Your light has been brightened 50%."
+        return "Your light has been brightened 50%."
 
     else:
         return "Sorry, I didn't recognize your request."
