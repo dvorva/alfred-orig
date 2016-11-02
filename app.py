@@ -50,7 +50,7 @@ def webhook():
         return "ok", 200
 
     except Exception, e:
-        log("ERROR: " + str(e)
+        log("ERROR: " + str(e))
         return "internal server error", 500
 
 def get_response(input_command, sender_id):
