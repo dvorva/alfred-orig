@@ -40,7 +40,7 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
 
-                    response = get_response(message_text)
+                    response = get_response(message_text, sender_id)
                     send_message(sender_id, response)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
@@ -52,7 +52,7 @@ def webhook():
 
     return "ok", 200
 
-def get_response(input_command):
+def get_response(input_command, sender_id):
     input_command = input_command.lower()
     if(input_command == "turn light on"):
         return "I've turned your lights on."
@@ -85,7 +85,8 @@ def get_response(input_command):
             return "No, I have not detected motion recently."
 
     elif(input_command == "send camera screenshot"):
-        return "Your light has been brightened 50%."
+        send_picture_message(sender_id)
+        return "Your light has been brightened by 50%."
 
     else:
         return "Sorry, I didn't recognize your request."
@@ -113,6 +114,29 @@ def send_message(recipient_id, message_text):
         log(r.status_code)
         log(r.text)
 
+def send_picture_message(recipient_id):
+
+    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+
+    params = {
+        "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    data = json.dumps({
+        "recipient": {
+            "id": recipient_id
+        },
+        "message": {
+            "type": "image",
+            "payload.url": "thepic.jpeg"
+        }
+    })
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+    if r.status_code != 200:
+        log(r.status_code)
+        log(r.text)
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
