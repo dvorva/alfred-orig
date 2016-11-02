@@ -131,7 +131,7 @@ def send_picture_message(recipient_id):
             "attachment":{
                 "type": "image",
                 "payload":{
-                    "url": "/app/thepic.jpeg"
+                    "url":"http://media.mlive.com/kzgazette_impact/photo/12627792-small.jpg"
                 }
             }
         }
