@@ -1,8 +1,8 @@
 import os
 import sys
 import json
+from flask import request
 
-import requests
 from flask import Flask, request
 
 app = Flask(__name__)
@@ -55,12 +55,12 @@ def webhook():
 
 @app.route('/oauth', methods=['GET'])
 def oauth():
-	log(str(requests.args))
-	if 'code' in requests.args:
-		code = requests.args.get('code')
+	log(str(request.args))
+	if 'code' in request.args:
+		code = request.args.get('code')
 		r = requests.post("https://graph.api.smartthings.com/oauth/token", data = {'grant_type':'authorization_code', 'code':code, 'client_id':'3265edcb-4694-487b-907d-9550cfb4e00e', 'client_secret':'32596d0e-741c-4748-95a3-4e896fb75698', 'redirect_url':'http://alfred-heroku.herokuapp.com/oauth'})
 	else:
-		log(str(requests.args))
+		log(str(request.args))
 	
 	return "ok", 200
 
