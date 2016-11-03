@@ -53,6 +53,16 @@ def webhook():
         log("ERROR: " + str(e))
         return "internal server error", 500
 
+@app.route('/oauth', methods=['GET'])
+def oauth():
+	if 'code' in requests.args:
+		code = requests.args.get('code')
+		r = requests.post("https://graph.api.smartthings.com/oauth/token", data = {'grant_type':'authorization_code', 'code':code, 'client_id':'b882249a-a9b4-4690-935d-bf78aeeb991a', 'client_secret':'6d42b99f-0ac1-45fe-b70f-2a4556842bed', 'redirect_url':'http://alfred-'})
+	else:
+		log(str(requests.args))
+	
+	return "ok", 200
+
 def get_response(input_command, sender_id):
     input_command = input_command.lower()
     if(input_command == "turn light on"):
