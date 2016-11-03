@@ -61,8 +61,8 @@ def oauth():
 		code = request.args.get('code')
 		params = urllib.urlencode({'grant_type':'authorization_code', 'code':code, 'client_id':'b882249a-a9b4-4690-935d-bf78aeeb991a', 'client_secret':'6d42b99f-0ac1-45fe-b70f-2a4556842bed', 'redirect_url':'http://alfred-heroku.herokuapp.com/oauth'})
 		headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
-		conn = httplib.HTTPConnection("graph.api.smartthings.com/oauth/token")
-		conn.request("POST", "", params, headers)
+		conn = httplib.HTTPConnection("graph.api.smartthings.com")
+		conn.request("POST", "/oauth/token", params, headers)
 		response = conn.getresponse()
 		print str(response)
 	else:
