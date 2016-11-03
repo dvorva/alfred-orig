@@ -55,9 +55,10 @@ def webhook():
 
 @app.route('/oauth', methods=['GET'])
 def oauth():
+	log(str(requests.args))
 	if 'code' in requests.args:
 		code = requests.args.get('code')
-		r = requests.post("https://graph.api.smartthings.com/oauth/token", data = {'grant_type':'authorization_code', 'code':code, 'client_id':'b882249a-a9b4-4690-935d-bf78aeeb991a', 'client_secret':'6d42b99f-0ac1-45fe-b70f-2a4556842bed', 'redirect_url':'http://alfred-'})
+		r = requests.post("https://graph.api.smartthings.com/oauth/token", data = {'grant_type':'authorization_code', 'code':code, 'client_id':'3265edcb-4694-487b-907d-9550cfb4e00e', 'client_secret':'32596d0e-741c-4748-95a3-4e896fb75698', 'redirect_url':'http://alfred-heroku.herokuapp.com/oauth'})
 	else:
 		log(str(requests.args))
 	
