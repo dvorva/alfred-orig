@@ -2,6 +2,7 @@ import os
 import sys
 import json
 from flask import request
+import httplib, urllib
 
 from flask import Flask, request
 
@@ -58,7 +59,11 @@ def oauth():
 	log(str(request.args))
 	if 'code' in request.args:
 		code = request.args.get('code')
-		r = request.post("https://graph.api.smartthings.com/oauth/token", data = {'grant_type':'authorization_code', 'code':code, 'client_id':'b882249a-a9b4-4690-935d-bf78aeeb991a', 'client_secret':'6d42b99f-0ac1-45fe-b70f-2a4556842bed', 'redirect_url':'http://alfred-heroku.herokuapp.com/oauth'})
+		params = urllib.urlencode({'grant_type':'authorization_code', 'code':code, 'client_id':'b882249a-a9b4-4690-935d-bf78aeeb991a', 'client_secret':'6d42b99f-0ac1-45fe-b70f-2a4556842bed', 'redirect_url':'http://alfred-heroku.herokuapp.com/oauth'})
+		headers = {"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain"}
+		conn = httplib.HTTPConnection("https://graph.api.smartthings.com/oauth/token")
+		conn.request("POST", "", params, headers)
+		response = conn.getresponse()
 	else:
 		log(str(request.args))
 	
