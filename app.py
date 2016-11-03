@@ -64,6 +64,7 @@ def oauth():
 		conn = httplib.HTTPConnection("https://graph.api.smartthings.com/oauth/token")
 		conn.request("POST", "", params, headers)
 		response = conn.getresponse()
+		print str(response)
 	else:
 		log(str(request.args))
 	
