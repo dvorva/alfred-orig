@@ -73,7 +73,7 @@ def oauth():
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
 
-	requests_file = open("~/logs/chat_messages.txt", "a")
+	requests_file = open("/app/logs/chat_messages.txt", "a")
 	requests_file.write('{"class": X, "commandText": "'+input_command + '"},')
 	requests_file.close()
 
