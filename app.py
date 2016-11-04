@@ -77,7 +77,7 @@ def get_response(input_command, sender_id):
 	# get result (int)
 	# return response
 
-	requests_file = open("/app/logs/chat_messages.txt", "a")
+	requests_file = open("/app/chat_messages.txt", "a")
 	requests_file.write('{"class": X, "commandText": "' + input_command + '"},')
 	requests_file.close()
 
