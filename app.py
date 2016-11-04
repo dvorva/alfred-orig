@@ -72,6 +72,11 @@ def oauth():
 
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
+
+	with open("~/logs/chat_messages.txt", "a") as requests_file:
+    	requests_file.write('{"class": X, "commandText": "' + input_command + '"},')
+
+
 	if(input_command == "turn light on"):
 		return "I've turned your lights on."
 
