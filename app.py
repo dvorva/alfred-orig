@@ -2,7 +2,8 @@ import os
 import sys
 import json
 import httplib, urllib
-from flask import Flask, request, requests
+import requests
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -71,8 +72,13 @@ def oauth():
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
 
+	# sanitize input
+	# log input
+	# get result (int)
+	# return response
+
 	requests_file = open("/app/logs/chat_messages.txt", "a")
-	requests_file.write('{"class": X, "commandText": "'+input_command + '"},')
+	requests_file.write('{"class": X, "commandText": "' + input_command + '"},')
 	requests_file.close()
 
 	if(input_command == "turn light on"):
