@@ -1,10 +1,8 @@
 import os
 import sys
 import json
-from flask import request
 import httplib, urllib
-
-from flask import Flask, request
+from flask import Flask, request, requests
 
 app = Flask(__name__)
 
