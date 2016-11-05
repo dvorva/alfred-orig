@@ -42,11 +42,7 @@ def webhook():
 					if messaging_event.get("message"):  # someone sent us a message
 						sender_id = messaging_event["sender"]["id"]		# the facebook ID of the person sending you the message
 						#ignore case where alfred is the sender
-						if sender_id == 1885643518323254:
-							print "HELLO WORLD"
-							continue
 						if sender_id == '1885643518323254':
-							print "HELLO WORLD2"
 							continue
 						recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
 						if messaging_event["message"].get("text"):
