@@ -4,6 +4,7 @@ import json
 import httplib, urllib
 import requests
 from flask import Flask, request
+from model_extension import sanitize_input, classify
 
 app = Flask(__name__)
 
@@ -73,49 +74,42 @@ def get_response(input_command, sender_id):
 	input_command = input_command.lower()
 
 	# sanitize input
-	# log input
-	# get result (int)
-	# return response
+	sanitized_command = sanitize_input(input_command)
 
+	# log input
 	requests_file = open("/app/chat_messages.txt", "a")
 	requests_file.write('{"class": X, "commandText": "' + input_command + '"},')
 	requests_file.close()
 
-	if(input_command == "turn light on"):
-		return "I've turned your lights on."
+	# get result (int)
+	classification_code = classify(sanitized_command)
 
-	elif(input_command == "turn light off"):
+	# return response
+	if(classification_code == 0):
+		return "Sorry, I didn't recognize your request."
+	elif(classification_code == 1):
 		return "I've turned your lights off."
-
-	elif(input_command == "is my light on"):
+	elif(classification_code == 2):
+		return "I've turned your lights on."
+	elif(classification_code == 3):
+		return "Your light has been dimmed 50%."
+	elif(classification_code == 4):
+		return "Your light has been brightened 50%."
+	elif(classification_code == 5):
 		if True:
 			return "Yes, your light is on."
 		else:
 			return "No, your light is off."
-
-	elif(input_command == "turn light off"):
-		if True:
-			return "Yes, your light is off."
-		else:
-			return "No, your light is on."
-
-	elif(input_command == "dim my light"):
-		return "Your light has been dimmed 50%."
-
-	elif(input_command == "brighten my light"):
-		return "Your light has been brightened 50%."
-
-	elif(input_command == "is there motion"):
+	elif(classification_code == 6):
 		if True:
 			return "Yes, I detected motion recently."
 		else:
 			return "No, I have not detected motion recently."
-
-	elif(input_command == "send camera screenshot"):
+	elif(classification_code == 7):
 		send_picture_message(sender_id)
 		return "Here is a picture from your camera."
 	else:
-		return "Sorry, I didn't recognize your request."
+		return "Unknown classification code received by model."
 
 def send_message(recipient_id, message_text):
 
