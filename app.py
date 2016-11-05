@@ -96,7 +96,8 @@ def get_response(input_command, sender_id):
 	)
 	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%d, %s, %d)"
 	log_data = (sender_id, sanitized_command, classification_code)
-	curs.execute(query, log_data)
+	cur = conn.cursor()
+	cur.execute(query, log_data)
 
 	# return response
 	if(classification_code == 0):
