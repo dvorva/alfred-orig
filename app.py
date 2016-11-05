@@ -94,11 +94,13 @@ def get_response(input_command, sender_id):
 	    host=url.hostname,
 	    port=url.port
 	)
-	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%d, %s, %d)"
-	log_data = (sender_id, sanitized_command, classification_code)
+	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES ({}, {}, {})"
+	query.format(sender_id, sanitized_command, classification_code)
+	#log_data = (sender_id, sanitized_command, classification_code)
 	cur = conn.cursor()
-	cur.execute(query, log_data)
-
+	cur.execute(query)
+	conn.commit()
+	conn.close()
 	# return response
 	if(classification_code == 0):
 		return "Sorry, I didn't recognize your request."
