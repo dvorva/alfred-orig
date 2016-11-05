@@ -94,11 +94,11 @@ def get_response(input_command, sender_id):
 	    host=url.hostname,
 	    port=url.port
 	)
-	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES ({}, {}, {})"
-	query.format(str(sender_id), sanitized_command, str(classification_code))
-	#log_data = (sender_id, sanitized_command, classification_code)
+	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%s, %s, %s)"
+	#query.format(str(sender_id), sanitized_command, str(classification_code))
+	log_data = (str(sender_id), sanitized_command, str(classification_code))
 	cur = conn.cursor()
-	cur.execute(query)
+	cur.execute(query, log_data)
 	conn.commit()
 	conn.close()
 	# return response
