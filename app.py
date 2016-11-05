@@ -5,11 +5,15 @@ import httplib, urllib
 import requests
 from flask import Flask, request
 from model_extension import sanitize_input, classify
+import psycopg2
+import os
+import urlparse
 
 app = Flask(__name__)
 
 #https://blog.hartleybrody.com/fb-messenger-bot/
 #https://alfred-heroku.herokuapp.com/
+#https://devcenter.heroku.com/articles/heroku-postgresql    DATABASE_URL
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -76,13 +80,23 @@ def get_response(input_command, sender_id):
 	# sanitize input
 	sanitized_command = sanitize_input(input_command)
 
-	# log input
-	requests_file = open("/app/chat_messages.txt", "a")
-	requests_file.write('{"class": X, "commandText": "' + input_command + '"},')
-	requests_file.close()
-
 	# get result (int)
 	classification_code = classify(sanitized_command)
+
+	# log input
+	# terminal: heroku pg:psql
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+	    database=url.path[1:],
+	    user=url.username,
+	    password=url.password,
+	    host=url.hostname,
+	    port=url.port
+	)
+	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%d, %s, %d)"
+	log_data = (sender_id, sanitized_command, classification_code)
+	curs.execute(query, log_data)
 
 	# return response
 	if(classification_code == 0):
