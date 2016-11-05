@@ -33,7 +33,7 @@ def classify(text_in):
     """
     Classify input text, response to be described
     """
-    clf = joblib.load('model.pkl')
-    word_list = joblib.load('dictionary.pkl')
+    clf = joblib.load('/app/model.pkl')
+    word_list = joblib.load('/app/dictionary.pkl')
     feature_vector = extract_feature_vector(text_in, word_list);
     return clf.predict(feature_vector)[0]
