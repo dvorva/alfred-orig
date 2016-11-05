@@ -35,5 +35,8 @@ def classify(text_in):
     """
     clf = joblib.load('/app/model.pkl')
     word_list = joblib.load('/app/dictionary.pkl')
-    feature_vector = extract_feature_vector(text_in, word_list);
+    feature_vector = extract_feature_vector(text_in, word_list)
+    # Arbitrary boundary for attempting to classify text
+    if np.amax(clf.decision_function(feature_vector)) < 0.75:
+        return 0
     return clf.predict(feature_vector)[0]

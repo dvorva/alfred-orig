@@ -14,6 +14,7 @@ app = Flask(__name__)
 #https://blog.hartleybrody.com/fb-messenger-bot/
 #https://alfred-heroku.herokuapp.com/
 #https://devcenter.heroku.com/articles/heroku-postgresql    DATABASE_URL
+# terminal: heroku pg:psql
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -84,23 +85,8 @@ def get_response(input_command, sender_id):
 	classification_code = classify(sanitized_command)
 
 	# log input
-	# terminal: heroku pg:psql
-	urlparse.uses_netloc.append('postgres')
-	url = urlparse.urlparse(os.environ['DATABASE_URL'])
-	conn = psycopg2.connect(
-	    database=url.path[1:],
-	    user=url.username,
-	    password=url.password,
-	    host=url.hostname,
-	    port=url.port
-	)
-	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%s, %s, %s)"
-	#query.format(str(sender_id), sanitized_command, str(classification_code))
-	log_data = (str(sender_id), sanitized_command, str(classification_code))
-	cur = conn.cursor()
-	cur.execute(query, log_data)
-	conn.commit()
-	conn.close()
+	log_message(sender_id, input_command, classification_code)
+
 	# return response
 	if(classification_code == 0):
 		return "Sorry, I didn't recognize your request."
@@ -183,6 +169,22 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 	print str(message)
 	sys.stdout.flush()
 
+def log_message(sender_id, input_command, classification_code):
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+	    database=url.path[1:],
+	    user=url.username,
+	    password=url.password,
+	    host=url.hostname,
+	    port=url.port
+	)
+	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%s, %s, %s)"
+	log_data = (str(sender_id), input_command, str(classification_code))
+	cur = conn.cursor()
+	cur.execute(query, log_data)
+	conn.commit()
+	conn.close()
 
 if __name__ == '__main__':
 	app.run(debug=True)
