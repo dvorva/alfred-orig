@@ -88,7 +88,7 @@ def handle_smartthings_request_get(endpoint):
 	log(r.text)
 	json_data = json.loads(r.text)
 
-	return r.text
+	return json_data
 
 def handle_smartthings_request_put(endpoint):
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
