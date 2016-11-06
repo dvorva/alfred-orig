@@ -86,7 +86,7 @@ def handle_smartthings_request_get(endpoint):
 	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
 	r=requests.get(url, headers={"Authorization":authorization})
 	log(r.text)
-	#json_data = json.loads(r.text)
+	json_data = json.loads(r.text)
 
 	return r.text
 
@@ -95,10 +95,6 @@ def handle_smartthings_request_put(endpoint):
 	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
 	r=requests.put(url, headers={"Authorization":authorization})
 	log(r.text)
-	#json_data = json.loads(r.text)
-
-	return r.text
-
 
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
@@ -112,25 +108,25 @@ def get_response(input_command, sender_id):
 	# log input
 	log_message(sender_id, input_command, classification_code)
 
-
 	# return response
 	if(classification_code == 0):
 		return "Sorry, I didn't recognize your request."
 	elif(classification_code == 1):
 		#TODO: check if already on/off for all light requests
-		json_response = handle_smartthings_request_put("bulb/on")
+		handle_smartthings_request_put("bulb/on")
 		return "I've turned your lights off."
 	elif(classification_code == 2):
-		json_response = handle_smartthings_request_put("bulb/off")
+		handle_smartthings_request_put("bulb/off")
 		return "I've turned your lights on."
 	elif(classification_code == 3):
-		json_response = handle_smartthings_request_put("bulb/dim")
+		handle_smartthings_request_put("bulb/dim")
 		return "Your light has been dimmed 20%."
 	elif(classification_code == 4):
-		json_response = handle_smartthings_request_put("bulb/brighten")
+		handle_smartthings_request_put("bulb/brighten")
 		return "Your light has been brightened to 100%."
 	elif(classification_code == 5):
 		json_response = handle_smartthings_request_get("bulb")
+		log(json_response)
 		if True:
 			return "Yes, your light is on."
 		else:
