@@ -79,7 +79,7 @@ def oauth():
 
 	return "ok", 200
 
-def handle_smartthings_request(endpoint):
+def handle_smartthings_request_get(endpoint):
 
 	#GET -H "Authorization: Bearer ACCESS-TOKEN" "https://graph.api.smartthings.com/api/smartapps/endpoints"
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
@@ -90,6 +90,17 @@ def handle_smartthings_request(endpoint):
 	json_data = json.loads(r.text)
 
 	return json_data
+
+def handle_smartthings_request_put(endpoint):
+	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
+	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
+	log(url)
+	r=requests.put(url, headers={"Authorization":authorization})
+	log(r.text)
+	json_data = json.loads(r.text)
+
+	return json_data
+
 
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
@@ -109,31 +120,31 @@ def get_response(input_command, sender_id):
 		return "Sorry, I didn't recognize your request."
 	elif(classification_code == 1):
 		#TODO: check if already on/off for all light requests
-		json_response = handle_smartthings_request("bulb/on")
+		json_response = handle_smartthings_request_put("bulb/on")
 		return "I've turned your lights off."
 	elif(classification_code == 2):
-		json_response = handle_smartthings_request("bulb/off")
+		json_response = handle_smartthings_request_put("bulb/off")
 		return "I've turned your lights on."
 	elif(classification_code == 3):
-		json_response = handle_smartthings_request("bulb/dim")
+		json_response = handle_smartthings_request_put("bulb/dim")
 		return "Your light has been dimmed 20%."
 	elif(classification_code == 4):
-		json_response = handle_smartthings_request("bulb/brighten")
+		json_response = handle_smartthings_request_put("bulb/brighten")
 		return "Your light has been brightened to 100%."
 	elif(classification_code == 5):
-		json_response = handle_smartthings_request("bulb")
+		json_response = handle_smartthings_request_get("bulb")
 		if True:
 			return "Yes, your light is on."
 		else:
 			return "No, your light is off."
 	elif(classification_code == 6):
-		json_response = handle_smartthings_request("cameraMotion")
+		json_response = handle_smartthings_request_get("cameraMotion")
 		if True:
 			return "Yes, I detected motion recently."
 		else:
 			return "No, I have not detected motion recently."
 	elif(classification_code == 7):
-		json_response = handle_smartthings_request("bulb/brighten")
+		json_response = handle_smartthings_request_put("takePicture")
 		send_picture_message(sender_id)
 		return "Here is a picture from your camera."
 	else:
