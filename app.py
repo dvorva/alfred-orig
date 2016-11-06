@@ -144,7 +144,7 @@ def get_response(input_command, sender_id):
 		else:
 			return "No, I have not detected motion recently."
 	elif(classification_code == 7):
-		json_response = handle_smartthings_request_put("takePicture")
+		json_response = handle_smartthings_request_get("takePicture")
 		send_picture_message(sender_id)
 		return "Here is a picture from your camera."
 	else:
