@@ -125,11 +125,11 @@ def get_response(input_command, sender_id):
 		return "Your light has been brightened to 100%."
 	elif(classification_code == 5):
 		json_response = handle_smartthings_request_get("bulb")
-		if json_response[1]['status'] == 'on':
-			return "Yes, your light is on at" + json_response[0]['level'] + "%."
-		else:
-			return "No, your light is off."
-
+		#if json_response[1]['status'] == 'on':
+			#return "Yes, your light is on at" + json_response[0]['level'] + "%."
+		#else:
+			#return "No, your light is off."
+		return "yes"
 
 	elif(classification_code == 6):
 		json_response = handle_smartthings_request_get("cameraMotion")
