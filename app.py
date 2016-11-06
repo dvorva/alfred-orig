@@ -94,7 +94,7 @@ def handle_smartthings_request_put(endpoint):
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
 	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
 	r=requests.put(url, headers={"Authorization":authorization})
-	log(r.text)
+	log(url)
 
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
@@ -112,7 +112,6 @@ def get_response(input_command, sender_id):
 	if(classification_code == 0):
 		return "Sorry, I didn't recognize your request."
 	elif(classification_code == 1):
-		#TODO: check if already on/off for all light requests
 		handle_smartthings_request_put("bulb/on")
 		return "I've turned your lights off."
 	elif(classification_code == 2):
@@ -126,11 +125,12 @@ def get_response(input_command, sender_id):
 		return "Your light has been brightened to 100%."
 	elif(classification_code == 5):
 		json_response = handle_smartthings_request_get("bulb")
-		log(json_response)
-		if True:
+		if json_response['status'] == 'on':
 			return "Yes, your light is on."
 		else:
 			return "No, your light is off."
+
+
 	elif(classification_code == 6):
 		json_response = handle_smartthings_request_get("cameraMotion")
 		if True:
