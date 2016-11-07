@@ -110,35 +110,49 @@ def get_response(input_command, sender_id):
 
 	# return response
 	if(classification_code == 0):
-		return "Sorry, I didn't recognize your request."
+		return "Sorry, I don't understand."
+
 	elif(classification_code == 1):
+		json_response = handle_smartthings_request_get("bulb")
+		if json_response[1]['value'] == 'off':
+			return "Your light is already off."
 		handle_smartthings_request_put("bulb/off")
-		return "I've turned your lights off."
+		return "I've turned your light off."
+
 	elif(classification_code == 2):
+		json_response = handle_smartthings_request_get("bulb")
+		if json_response[1]['value'] == 'on':
+			return "Your light is already on."
 		handle_smartthings_request_put("bulb/on")
-		return "I've turned your lights on."
+		return "I've turned your light on."
+
 	elif(classification_code == 3):
 		handle_smartthings_request_put("bulb/dim")
-		return "Your light has been dimmed 20%."
+		return "Your light is now dimmed to 20%."
+
 	elif(classification_code == 4):
 		handle_smartthings_request_put("bulb/brighten")
-		return "Your light has been brightened to 100%."
+		return "Your light is now brightened to 100%."
+
 	elif(classification_code == 5):
 		json_response = handle_smartthings_request_get("bulb")
 		if json_response[1]['value'] == 'on':
-			return "Yes, your light is on at " + str(json_response[0]['value']) + "%."
+			return "Your light is on at " + str(json_response[0]['value']) + "%."
 		else:
-			return "No, your light is off."
+			return "Your light is off."
+
 	elif(classification_code == 6):
 		json_response = handle_smartthings_request_get("cameraMotion")
 		if True:
-			return "Yes, I detected motion recently."
+			return "I detected motion recently."
 		else:
-			return "No, I have not detected motion recently."
+			return "I have not detected motion recently."
+
 	elif(classification_code == 7):
 		json_response = handle_smartthings_request_get("takePicture")
 		send_picture_message(sender_id)
-		return "Here is a picture from your camera."
+		return "Here is a current picture from your camera."
+
 	else:
 		return "Unknown classification code received by model."
 
@@ -183,7 +197,8 @@ def send_picture_message(recipient_id):
 			"attachment":{
 				"type": "image",
 				"payload":{
-					"url":"http://media.mlive.com/kzgazette_impact/photo/12627792-small.jpg"
+					#"url":"http://media.mlive.com/kzgazette_impact/photo/12627792-small.jpg"
+					"url":"https://scontent.xx.fbcdn.net/v/t1.0-9/15027448_1888608944693378_4139724658200573_n.jpg?oh=cca96f3729e407f5d9e0a9a3cb942e53&oe=58D26B09"
 				}
 			}
 		}
