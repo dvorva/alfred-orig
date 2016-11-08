@@ -128,7 +128,7 @@ def get_response(input_command, sender_id):
 
 	elif(classification_code == 3):
 		handle_smartthings_request_put("bulb/dim")
-		return "Your light is now dimmed to 20%."
+		return "Hello {{user_first_name}}, your light is now dimmed to 20%."
 
 	elif(classification_code == 4):
 		handle_smartthings_request_put("bulb/brighten")
