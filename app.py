@@ -84,9 +84,8 @@ def handle_smartthings_request_get(endpoint):
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
 	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
 	r=requests.get(url, headers={"Authorization":authorization})
-	#log(r.text)
-	#json_data = json.loads(r.text)
-	json_data = ""
+	log(r.text)
+	json_data = json.loads(r.text)
 	return json_data
 
 def handle_smartthings_request_put(endpoint):
@@ -113,15 +112,15 @@ def get_response(input_command, sender_id):
 
 	elif(classification_code == 1):
 		json_response = handle_smartthings_request_get("bulb")
-		#if json_response[1]['value'] == 'off':
-		return "Your light is already off."
+		if json_response[1]['value'] == 'off':
+			return "Your light is already off."
 		handle_smartthings_request_put("bulb/off")
 		return "I've turned your light off."
 
 	elif(classification_code == 2):
 		json_response = handle_smartthings_request_get("bulb")
-		#if json_response[1]['value'] == 'on':
-		return "Your light is already on."
+		if json_response[1]['value'] == 'on':
+			return "Your light is already on."
 		handle_smartthings_request_put("bulb/on")
 		return "I've turned your light on."
 
@@ -135,10 +134,10 @@ def get_response(input_command, sender_id):
 
 	elif(classification_code == 5):
 		json_response = handle_smartthings_request_get("bulb")
-		#if json_response[1]['value'] == 'on':
-		#	return "Your light is on at " + str(json_response[0]['value']) + "%."
-		#else:
-		return "Your light is off."
+		if json_response[1]['value'] == 'on':
+			return "Your light is on at " + str(json_response[0]['value']) + "%."
+		else:
+			return "Your light is off."
 
 	elif(classification_code == 6):
 		#json_response = handle_smartthings_request_get("cameraMotion")
