@@ -106,7 +106,7 @@ def get_response(input_command, sender_id):
 	classification_code = classify(sanitized_command)
 
 	# log input
-	log_message(sender_id, input_command, classification_code)
+	#log_message(sender_id, input_command, classification_code)
 
 	# return response
 	if(classification_code == 0):
