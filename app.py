@@ -35,7 +35,6 @@ def webhook():
 	# endpoint for processing incoming messaging events
 	try:
 		data = request.get_json()
-		log(data)  # you may not want to log every incoming message in production, but it's good for testing
 		if data["object"] == "page":
 
 			for entry in data["entry"]:
@@ -85,7 +84,7 @@ def handle_smartthings_request_get(endpoint):
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
 	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
 	r=requests.get(url, headers={"Authorization":authorization})
-	log(r.text)
+	#log(r.text)
 	json_data = json.loads(r.text)
 	return json_data
 
@@ -93,7 +92,7 @@ def handle_smartthings_request_put(endpoint):
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
 	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
 	r=requests.put(url, headers={"Authorization":authorization})
-	log(url)
+	#log(url)
 
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
@@ -141,14 +140,14 @@ def get_response(input_command, sender_id):
 			return "Your light is off."
 
 	elif(classification_code == 6):
-		json_response = handle_smartthings_request_get("cameraMotion")
+		#json_response = handle_smartthings_request_get("cameraMotion")
 		if True:
 			return "I detected motion recently."
 		else:
 			return "I have not detected motion recently."
 
 	elif(classification_code == 7):
-		json_response = handle_smartthings_request_get("takePicture")
+		#json_response = handle_smartthings_request_get("takePicture")
 		send_picture_message(sender_id)
 		return "Here is a current picture from your camera."
 
@@ -164,7 +163,7 @@ def get_response(input_command, sender_id):
 
 def send_message(recipient_id, message_text):
 
-	log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+	#log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
 
 	params = {
 		"access_token": os.environ["PAGE_ACCESS_TOKEN"]
