@@ -113,15 +113,15 @@ def get_response(input_command, sender_id):
 
 	elif(classification_code == 1):
 		json_response = handle_smartthings_request_get("bulb")
-		if json_response[1]['value'] == 'off':
-			return "Your light is already off."
+		#if json_response[1]['value'] == 'off':
+		#	return "Your light is already off."
 		handle_smartthings_request_put("bulb/off")
 		return "I've turned your light off."
 
 	elif(classification_code == 2):
 		json_response = handle_smartthings_request_get("bulb")
-		if json_response[1]['value'] == 'on':
-			return "Your light is already on."
+		#if json_response[1]['value'] == 'on':
+		#	return "Your light is already on."
 		handle_smartthings_request_put("bulb/on")
 		return "I've turned your light on."
 
@@ -135,10 +135,10 @@ def get_response(input_command, sender_id):
 
 	elif(classification_code == 5):
 		json_response = handle_smartthings_request_get("bulb")
-		if json_response[1]['value'] == 'on':
-			return "Your light is on at " + str(json_response[0]['value']) + "%."
-		else:
-			return "Your light is off."
+		#if json_response[1]['value'] == 'on':
+		#	return "Your light is on at " + str(json_response[0]['value']) + "%."
+		#else:
+		return "Your light is off."
 
 	elif(classification_code == 6):
 		#json_response = handle_smartthings_request_get("cameraMotion")
