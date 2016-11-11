@@ -153,6 +153,13 @@ def get_response(input_command, sender_id):
 		send_picture_message(sender_id)
 		return "Here is a current picture from your camera."
 
+	elif(classification_code == 8):
+		json_response = handle_smartthings_request_get("door")
+		#if json_response[1]['value'] == 'on':
+		#	return "Your light is on at " + str(json_response[0]['value']) + "%."
+		#else:
+		return "I'm trying to access your door sensor."
+
 	else:
 		return "Unknown classification code received by model."
 
