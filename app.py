@@ -154,7 +154,7 @@ def get_response(input_command, sender_id):
 		return "Here is a current picture from your camera."
 
 	elif(classification_code == 8):
-		json_response = handle_smartthings_request_get("doorStatus")
+		handle_smartthings_request_get("doorStatus")
 		#if json_response[1]['value'] == 'on':
 		#	return "Your light is on at " + str(json_response[0]['value']) + "%."
 		#else:
