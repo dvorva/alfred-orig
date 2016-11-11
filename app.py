@@ -86,8 +86,7 @@ def handle_smartthings_request_get(endpoint):
 	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
 	r=requests.get(url, headers={"Authorization":authorization})
 	log(r.text)
-	#json_data = json.loads(r.text)
-	json_data = ""
+	json_data = json.loads(r.text)
 	return json_data
 
 def handle_smartthings_request_put(endpoint):
