@@ -149,21 +149,19 @@ def get_response(input_command, sender_id):
 	elif(classification_code == 6):
 		json_response = handle_smartthings_request_get("cameraMotion")
 		if True:
-			return "I detected motion recently."
+			return "I detected motion recently TODO."
 		else:
-			return "I have not detected motion recently."
+			return "I have not detected motion recently TODO."
 
 	elif(classification_code == 7):
 		#json_response = handle_smartthings_request_get("takePicture")
 		send_picture_message(sender_id)
-		return "Here is a current picture from your camera."
+		return "Here is a current picture from your camera TODO."
 
 	elif(classification_code == 8):
 		#handle_smartthings_request_get_test("doorStatus")
-		#if json_response[1]['value'] == 'on':
-		#	return "Your light is on at " + str(json_response[0]['value']) + "%."
-		#else:
 		return "I'm trying to access your door sensor TODO."
+	#9 color
 
 	else:
 		return "Unknown classification code received by model."
@@ -183,7 +181,6 @@ def send_message(recipient_id, message_text):
 			"id": recipient_id
 		},
 		"message": {
-			"text": message_text,
 			"attachment": { #comment out the attachment for non-test mode
 				"type": "template",
 				"payload": {
