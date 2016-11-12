@@ -35,6 +35,7 @@ def webhook():
 	# endpoint for processing incoming messaging events
 	try:
 		data = request.get_json()
+		log(data)
 		if data["object"] == "page":
 			for entry in data["entry"]:
 				for messaging_event in entry["messaging"]:
@@ -44,7 +45,6 @@ def webhook():
 						if sender_id == '1885643518323254':
 							continue
 						recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
-						log(messaging_event["message"])
 						if messaging_event["message"].get("text"):
 							message_text = messaging_event["message"]["text"]  # the message's text
 							response = get_response(message_text, sender_id)
@@ -82,23 +82,14 @@ def oauth():
 def handle_smartthings_request_get(endpoint):
 	#GET -H "Authorization: Bearer ACCESS-TOKEN" "https://graph.api.smartthings.com/api/smartapps/endpoints"
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
-	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
+	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/0e5e4208-87a9-48b7-8529-3b0e334dc073/" + endpoint
 	r=requests.get(url, headers={"Authorization":authorization})
-	log(r.text)
 	json_data = json.loads(r.text)
 	return json_data
 
-
-def handle_smartthings_request_get_test(endpoint):
-	#GET -H "Authorization: Bearer ACCESS-TOKEN" "https://graph.api.smartthings.com/api/smartapps/endpoints"
-	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
-	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
-	r=requests.get(url, headers={"Authorization":authorization})
-	log(r.text)
-
 def handle_smartthings_request_put(endpoint):
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
-	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/6536ba39-04c9-4cd2-9759-56da43b45da7/" + endpoint
+	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/0e5e4208-87a9-48b7-8529-3b0e334dc073/" + endpoint
 	r=requests.put(url, headers={"Authorization":authorization})
 	#log(url)
 
@@ -169,7 +160,7 @@ def get_response(input_command, sender_id):
 		return "Here is a current picture from your camera TODO."
 
 	elif(classification_code == 8):
-		#handle_smartthings_request_get_test("doorStatus")
+		#handle_smartthings_request_get("doorStatus")
 		return "I'm trying to access your door sensor TODO."
 	elif(classification_code == 9):
 		son_response = handle_smartthings_request_get("light/30")
