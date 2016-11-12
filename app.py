@@ -44,6 +44,7 @@ def webhook():
 						if sender_id == '1885643518323254':
 							continue
 						recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+						log(messaging_event["message"])
 						if messaging_event["message"].get("text"):
 							message_text = messaging_event["message"]["text"]  # the message's text
 							response = get_response(message_text, sender_id)
@@ -170,7 +171,9 @@ def get_response(input_command, sender_id):
 	elif(classification_code == 8):
 		#handle_smartthings_request_get_test("doorStatus")
 		return "I'm trying to access your door sensor TODO."
-	#9 color
+	elif(classification_code == 9):
+		son_response = handle_smartthings_request_get("light/30")
+		return "I've done something to color light."
 
 	else:
 		return "Unknown classification code received by model."
