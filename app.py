@@ -192,12 +192,12 @@ def send_message(recipient_id, message_text):
 					"buttons": [
 						{
 							"type": "postback",
-							"title": "Correct, good job Alfred 💪"
+							"title": "Correct, good job Alfred"
 							"payload":
 						},
 						{
 							"type": "postback",
-							"title": "Incorrect, bad Alfred 💩"
+							"title": "Incorrect, bad Alfred"
 							"payload":
 						}
 					]
