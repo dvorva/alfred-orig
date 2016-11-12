@@ -47,7 +47,7 @@ def webhook():
 						if messaging_event["message"].get("text"):
 							message_text = messaging_event["message"]["text"]  # the message's text
 							response = get_response(message_text, sender_id)
-							if(response != skip):
+							if(response != "skip"):
 								send_message(sender_id, response)
 
 					if messaging_event.get("delivery"):  # delivery confirmation
