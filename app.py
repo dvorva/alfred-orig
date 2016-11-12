@@ -33,6 +33,17 @@ def verify():
 def webhook():
 
 	# endpoint for processing incoming messaging events
+
+	{u'entry': [
+		{u'id': u'1885643518323254',
+		 u'time': 1478994897473,
+		 u'messaging': [
+		 	{u'sender':
+				{u'id': u'976031225857582'},
+				u'recipient': {u'id': u'1885643518323254'},
+				 u'timestamp': 1478994897473,
+				 u'postback':
+				 	{u'payload': u'works'}}]}], u'object': u'page'}
 	try:
 		data = request.get_json()
 		log(data)
@@ -48,15 +59,14 @@ def webhook():
 						if messaging_event["message"].get("text"):
 							message_text = messaging_event["message"]["text"]  # the message's text
 							response = get_response(message_text, sender_id)
-							if(response != "skip"):
-								send_message(sender_id, response)
-
+							send_message(sender_id, response)
 					if messaging_event.get("delivery"):  # delivery confirmation
 						pass
 					if messaging_event.get("optin"):  # optin confirmation
 						pass
-					if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
-						pass
+					if messaging_event.get("postback"):
+						postback_text = messaging_event["message"]["postback"]
+						log(postback_text)
 		return "ok", 200
 
 	except Exception, e:
@@ -99,20 +109,11 @@ def get_response(input_command, sender_id):
 	# sanitize input
 	sanitized_command = sanitize_input(input_command)
 
-	log(sanitized_command)
-
-	if(sanitized_command == "correct response"):
-		log("works")
-		return "skip"
-	elif(sanitized_command == "incorrect response"):
-		log("works2")
-		return "skip"
-
 	# get result (int)
 	classification_code = classify(sanitized_command)
 
 	# log input
-	#log_message(sender_id, input_command, classification_code)
+	log_message(sender_id, input_command, classification_code)
 
 	# return response
 	if(classification_code == 0):
