@@ -184,7 +184,7 @@ def send_message(recipient_id, message_text):
 		},
 		"message": {
 			"text": message_text,
-			"attachment": {
+			"attachment": { #comment out the attachment for non-test mode
 				"type": "template",
 				"payload": {
 					"template_type": "button",
@@ -283,12 +283,12 @@ def send_message_with_dropdown(recipient_id, message_text):
 					"buttons": [
 						{
 							"type": "postback",
-							"title": "Correct, good job Alfred"
+							"title": "Correct, good job Alfred",
 							"payload": "asd"
 						},
 						{
 							"type": "postback",
-							"title": "Incorrect, bad Alfred"
+							"title": "Incorrect, bad Alfred",
 							"payload": "psd"
 						}
 					]
