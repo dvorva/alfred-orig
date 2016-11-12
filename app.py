@@ -36,7 +36,6 @@ def webhook():
 	try:
 		data = request.get_json()
 		if data["object"] == "page":
-
 			for entry in data["entry"]:
 				for messaging_event in entry["messaging"]:
 					if messaging_event.get("message"):  # someone sent us a message
@@ -48,7 +47,8 @@ def webhook():
 						if messaging_event["message"].get("text"):
 							message_text = messaging_event["message"]["text"]  # the message's text
 							response = get_response(message_text, sender_id)
-							send_message(sender_id, response)
+							if(response != skip):
+								send_message(sender_id, response)
 
 					if messaging_event.get("delivery"):  # delivery confirmation
 						pass
@@ -106,6 +106,15 @@ def get_response(input_command, sender_id):
 
 	# sanitize input
 	sanitized_command = sanitize_input(input_command)
+
+	log(sanitized_command)
+
+	if(sanitized_command == "correct response"):
+		log("works")
+		return "skip"
+	elif(sanitized_command == "incorrect response"):
+		log("works2")
+		return "skip"
 
 	# get result (int)
 	classification_code = classify(sanitized_command)
@@ -189,12 +198,12 @@ def send_message(recipient_id, message_text):
 					"buttons": [
 						{
 							"type": "postback",
-							"title": "Correct, good job Alfred",
+							"title": "Correct response.",
 							"payload": "works"
 						},
 						{
 							"type": "postback",
-							"title": "Incorrect, bad Alfred",
+							"title": "Incorrect response.",
 							"payload": "broken"
 						}
 					]
@@ -256,47 +265,6 @@ def log_message(sender_id, input_command, classification_code):
 	cur.execute(query, log_data)
 	conn.commit()
 	conn.close()
-
-def send_message_with_dropdown(recipient_id, message_text):
-
-	log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-
-	params = {
-		"access_token": os.environ["PAGE_ACCESS_TOKEN"]
-	}
-	headers = {
-		"Content-Type": "application/json"
-	}
-	data = json.dumps({
-		"recipient": {
-			"id": recipient_id
-		},
-		"message": {
-			"attachment": {
-				"type": "template",
-				"payload": {
-					"template_type": "button",
-					"text": message_text,
-					"buttons": [
-						{
-							"type": "postback",
-							"title": "Correct, good job Alfred",
-							"payload": "asd"
-						},
-						{
-							"type": "postback",
-							"title": "Incorrect, bad Alfred",
-							"payload": "psd"
-						}
-					]
-				}
-			}
-		}
-	})
-	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-	if r.status_code != 200:
-		log(r.status_code)
-		log(r.text)
 
 if __name__ == '__main__':
 	app.run(debug=True)
