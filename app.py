@@ -283,13 +283,13 @@ def send_message_with_dropdown(recipient_id, message_text):
 					"buttons": [
 						{
 							"type": "postback",
-							"title": "Correct, good job Alfred 💪"
-							"payload":
+							"title": "Correct, good job Alfred"
+							"payload": "asd"
 						},
 						{
 							"type": "postback",
-							"title": "Incorrect, bad Alfred 💩"
-							"payload":
+							"title": "Incorrect, bad Alfred"
+							"payload": "psd"
 						}
 					]
 				}
