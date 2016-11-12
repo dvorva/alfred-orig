@@ -159,11 +159,11 @@ def get_response(input_command, sender_id):
 		return "Here is a current picture from your camera."
 
 	elif(classification_code == 8):
-		handle_smartthings_request_get_test("doorStatus")
+		#handle_smartthings_request_get_test("doorStatus")
 		#if json_response[1]['value'] == 'on':
 		#	return "Your light is on at " + str(json_response[0]['value']) + "%."
 		#else:
-		return "I'm trying to access your door sensor."
+		return "I'm trying to access your door sensor TODO."
 
 	else:
 		return "Unknown classification code received by model."
@@ -183,7 +183,26 @@ def send_message(recipient_id, message_text):
 			"id": recipient_id
 		},
 		"message": {
-			"text": message_text
+			"text": message_text,
+			"attachment": {
+				"type": "template",
+				"payload": {
+					"template_type": "button",
+					"text": message_text,
+					"buttons": [
+						{
+							"type": "postback",
+							"title": "Correct, good job Alfred 💪"
+							"payload":
+						},
+						{
+							"type": "postback",
+							"title": "Incorrect, bad Alfred 💩"
+							"payload":
+						}
+					]
+				}
+			}
 		}
 	})
 	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
@@ -240,6 +259,47 @@ def log_message(sender_id, input_command, classification_code):
 	cur.execute(query, log_data)
 	conn.commit()
 	conn.close()
+
+def send_message_with_dropdown(recipient_id, message_text):
+
+	log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+
+	params = {
+		"access_token": os.environ["PAGE_ACCESS_TOKEN"]
+	}
+	headers = {
+		"Content-Type": "application/json"
+	}
+	data = json.dumps({
+		"recipient": {
+			"id": recipient_id
+		},
+		"message": {
+			"attachment": {
+				"type": "template",
+				"payload": {
+					"template_type": "button",
+					"text": message_text,
+					"buttons": [
+						{
+							"type": "postback",
+							"title": "Correct, good job Alfred 💪"
+							"payload":
+						},
+						{
+							"type": "postback",
+							"title": "Incorrect, bad Alfred 💩"
+							"payload":
+						}
+					]
+				}
+			}
+		}
+	})
+	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+	if r.status_code != 200:
+		log(r.status_code)
+		log(r.text)
 
 if __name__ == '__main__':
 	app.run(debug=True)
