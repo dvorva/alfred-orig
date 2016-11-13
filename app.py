@@ -157,7 +157,8 @@ def get_response(input_command, sender_id):
 		return "Here is a current picture from your camera TODO."
 
 	elif(classification_code == 8):
-		#handle_smartthings_request_get("doorStatus")
+		json_response = handle_smartthings_request_get("contact")
+		log(json_response)
 		return "I'm trying to access your door sensor TODO."
 	elif(classification_code == 9):
 		son_response = handle_smartthings_request_get("light/30")
