@@ -32,18 +32,14 @@ def groovy_test():
 			"id": 1186606104737968
 		},
 		"message": {
-			"attachment": { #comment out the attachment for non-test mode
-				"type": "template",
-				"payload": {
-					"template_type": "button",
-					"text": "I see you may have just left, should I turn off your lights?",
-					    "quick_replies":[
-      						{
-       							"content_type":"text",
-        						"title":"Yes",
-        						"payload":"turn off light"
-      						},
-    					]
+				"text": "I see you may have just left, should I turn off your lights?",
+				"quick_replies":[
+      				{
+       					"content_type":"text",
+        				"title":"Yes",
+        				"payload":"turn off light"
+      				},
+    				]
 				}
 			}
 		}
