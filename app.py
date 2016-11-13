@@ -270,10 +270,13 @@ def update_result(sender_id, success):
 	query = "SELECT id FROM command_history WHERE client_id = " + str(sender_id) + " ORDER BY write_time DESC LIMIT 1;"
 	cur = conn.cursor()
 	cur.execute(query)
-	for record in cur:
-		log(cur)
+	record = cur.fetchone()
+	log(record)
+
+
 	conn.commit()
 	conn.close()
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
