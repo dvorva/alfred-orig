@@ -33,17 +33,6 @@ def verify():
 def webhook():
 
 	# endpoint for processing incoming messaging events
-
-	{u'entry': [
-		{u'id': u'1885643518323254',
-		 u'time': 1478994897473,
-		 u'messaging': [
-		 	{u'sender':
-				{u'id': u'976031225857582'},
-				u'recipient': {u'id': u'1885643518323254'},
-				 u'timestamp': 1478994897473,
-				 u'postback':
-				 	{u'payload': u'works'}}]}], u'object': u'page'}
 	try:
 		data = request.get_json()
 		log(data)
