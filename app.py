@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 @app.route('/test', methods=['GET'])
 def groovy_test():
-	log(requst)
+	log(request)
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -268,9 +268,8 @@ def update_result(sender_id, success):
 		port=url.port
 	)
 	query = "SELECT id FROM command_history WHERE client_id = %s ORDER BY write_time DESC LIMIT 1;"
-	log_data = (str(sender_id))
 	cur = conn.cursor()
-	cur.execute(query, log_data)
+	cur.execute(query, str(sender_id))
 	for record in cur:
 		log(cur)
 	conn.commit()
