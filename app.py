@@ -20,6 +20,39 @@ app = Flask(__name__)
 @app.route('/test', methods=['GET'])
 def groovy_test():
 	log(request)
+
+	params = {
+		"access_token": os.environ["PAGE_ACCESS_TOKEN"]
+	}
+	headers = {
+		"Content-Type": "application/json"
+	}
+	data = json.dumps({
+		"recipient": {
+			"id": 1186606104737968
+		},
+		"message": {
+			"attachment": { #comment out the attachment for non-test mode
+				"type": "template",
+				"payload": {
+					"template_type": "button",
+					"text": message_text,
+					    "quick_replies":[
+      						{
+       							"content_type":"text",
+        						"title":"Yes",
+        						"payload":"turn off light"
+      						},
+    					]
+				}
+			}
+		}
+	})
+	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+	if r.status_code != 200:
+		log(r.status_code)
+		log(r.text)
+
 	return "ok", 200
 
 @app.route('/', methods=['GET'])
