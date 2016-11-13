@@ -278,7 +278,7 @@ def update_result(sender_id, success):
 	cur.execute(query)
 	record = cur.fetchone()
 
-	query = "UPDATE command_history SET is_correct = " + str(success) + " WHERE id = " + record[0]
+	query = "UPDATE command_history SET is_correct = " + str(success) + " WHERE id = " + str(record[0]) + ";"
 	cur.execute(query)
 
 
