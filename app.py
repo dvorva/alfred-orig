@@ -104,8 +104,7 @@ def webhook():
 						if(postback_text == "Yes, please turn off the lights"):
 							handle_smartthings_request_put("bulb/off")
 							handle_smartthings_request_put("color/off")
-							response = get_response(postback_text, sender_id)
-							send_message(sender_id, response)
+							send_message(sender_id, "Your lights are now off")
 						if(postback_text == "works"):
 							update_result(sender_id, True)
 						elif(postback_text == "broken"):
