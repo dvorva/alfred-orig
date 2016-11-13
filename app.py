@@ -160,7 +160,10 @@ def get_response(input_command, sender_id):
 	elif(classification_code == 8):
 		json_response = handle_smartthings_request_get("contact")
 		#[{u'name': u'status', u'value': [u'closed']}]
-		log(json_response[0]['value'])
+		if json_response[0]['value'] == "closed":
+			log("yes!")
+		elif json_response[0]['value'] == "open":
+			log("no!!")
 		return "I'm trying to access your door sensor TODO."
 	elif(classification_code == 9):
 		son_response = handle_smartthings_request_get("light/30")
@@ -274,7 +277,9 @@ def update_result(sender_id, success):
 	cur = conn.cursor()
 	cur.execute(query)
 	record = cur.fetchone()
-	log(record[0])
+
+	query = "UPDATE command_history SET is_correct = " + str(success) + " WHERE id = " + record[0]
+	cur.execute(query)
 
 
 	conn.commit()
