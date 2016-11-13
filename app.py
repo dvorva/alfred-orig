@@ -38,7 +38,6 @@ def webhook():
 	# endpoint for processing incoming messaging events
 	try:
 		data = request.get_json()
-		log(data)
 		if data["object"] == "page":
 			for entry in data["entry"]:
 				for messaging_event in entry["messaging"]:
@@ -58,7 +57,12 @@ def webhook():
 						pass
 					if messaging_event.get("postback"):
 						postback_text = messaging_event["postback"]["payload"]
-						log(postback_text)
+						sender_id = messaging_event["sender"]["id"]
+						if(postback_text == "works"):
+							update_result(send_id, True)
+						else:
+							update_result(send_id, False)
+
 		return "ok", 200
 
 	except Exception, e:
@@ -252,6 +256,9 @@ def log_message(sender_id, input_command, classification_code):
 	cur.execute(query, log_data)
 	conn.commit()
 	conn.close()
+
+def update_result(sender_id, success):
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
