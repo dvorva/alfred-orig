@@ -267,9 +267,9 @@ def update_result(sender_id, success):
 		host=url.hostname,
 		port=url.port
 	)
-	query = "SELECT id FROM command_history WHERE client_id = %s ORDER BY write_time DESC LIMIT 1;"
+	query = "SELECT id FROM command_history WHERE client_id = " + str(sender_id) + " ORDER BY write_time DESC LIMIT 1;"
 	cur = conn.cursor()
-	cur.execute(query, str(sender_id))
+	cur.execute(query)
 	for record in cur:
 		log(cur)
 	conn.commit()
