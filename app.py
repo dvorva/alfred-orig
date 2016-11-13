@@ -97,7 +97,7 @@ def webhook():
 					if messaging_event.get("postback"):
 						postback_text = messaging_event["postback"]["payload"]
 						sender_id = messaging_event["sender"]["id"]
-						if(postback_text == "Yes, please turn off the lights")
+						if(postback_text == "Yes, please turn off the lights"):
 							response = get_response(postback_text, sender_id)
 							send_message(sender_id, response)
 						if(postback_text == "works"):
