@@ -32,14 +32,25 @@ def groovy_test():
 			"id": 1186606104737968
 		},
 		"message": {
-				"text": "I see you may have just left, should I turn off your lights?",
-				"quick_replies":[
-      				{
-       					"content_type":"text",
-        				"title":"Yes",
-        				"payload":"turn off light"
-      				},
-    				]
+			"attachment": { #comment out the attachment for non-test mode
+				"type": "template",
+				"payload": {
+					"template_type": "button",
+					"text": "I see you may have just left, should I turn off your lights?",
+					"buttons": [
+						{
+							"type": "postback",
+							"title": "Yes",
+							"payload": "Yes, please turn off the lights"
+						},
+						{
+							"type": "postback",
+							"title": "No",
+							"payload": "Do not turn off lights"
+						}
+					]
+				}
+			}
 		}
 	})
 	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
@@ -86,6 +97,9 @@ def webhook():
 					if messaging_event.get("postback"):
 						postback_text = messaging_event["postback"]["payload"]
 						sender_id = messaging_event["sender"]["id"]
+						if(postback_text == "Yes, please turn off the lights")
+							response = get_response(postback_text, sender_id)
+							send_message(sender_id, response)
 						if(postback_text == "works"):
 							update_result(sender_id, True)
 						elif(postback_text == "broken"):
