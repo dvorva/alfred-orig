@@ -20,6 +20,7 @@ app = Flask(__name__)
 @app.route('/test', methods=['GET'])
 def groovy_test():
 	log(request)
+	return "ok", 200
 
 @app.route('/', methods=['GET'])
 def verify():
