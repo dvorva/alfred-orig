@@ -267,10 +267,12 @@ def update_result(sender_id, success):
 		host=url.hostname,
 		port=url.port
 	)
-	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%s, %s, %s)"
-	log_data = (str(sender_id), input_command, str(classification_code))
+	query = "SELECT id FROM command_history WHERE client_id = %s ORDER BY write_time DESC LIMIT 1;
+	log_data = (str(sender_id))
 	cur = conn.cursor()
 	cur.execute(query, log_data)
+	for record in cur:
+		log(cur)
 	conn.commit()
 	conn.close()
 
