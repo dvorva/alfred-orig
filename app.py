@@ -160,11 +160,11 @@ def get_response(input_command, sender_id):
 	elif(classification_code == 8):
 		json_response = handle_smartthings_request_get("contact")
 		#[{u'name': u'status', u'value': [u'closed']}]
-		if json_response[0]['value'] == "closed":
-			log("yes!")
-		elif json_response[0]['value'] == "open":
-			log("no!!")
-		return "I'm trying to access your door sensor TODO."
+		if str(json_response[0]['value']) == "closed":
+			return "Your door is closed."
+		elif str(json_response[0]['value']) == "open":
+			return "Your door is open."
+		return "I should never print this."
 	elif(classification_code == 9):
 		son_response = handle_smartthings_request_get("light/30")
 		return "I've done something to color light."
