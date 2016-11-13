@@ -36,7 +36,7 @@ def groovy_test():
 				"type": "template",
 				"payload": {
 					"template_type": "button",
-					"text": message_text,
+					"text": "I see you may have just left, should I turn off your lights?",
 					    "quick_replies":[
       						{
        							"content_type":"text",
@@ -199,7 +199,7 @@ def get_response(input_command, sender_id):
 			return "Your door is open."
 		return "Error, incorrect contact device response."
 	elif(classification_code == 9):
-		json_response = handle_smartthings_request_get("light/30")
+		json_response = handle_smartthings_request_get("color/30")
 		return "I've done something to color light."
 
 	else:
