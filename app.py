@@ -60,7 +60,7 @@ def webhook():
 						sender_id = messaging_event["sender"]["id"]
 						if(postback_text == "works"):
 							update_result(send_id, True)
-						else:
+						elif(postback_text == "broken"):
 							update_result(send_id, False)
 
 		return "ok", 200
@@ -267,7 +267,7 @@ def update_result(sender_id, success):
 		host=url.hostname,
 		port=url.port
 	)
-	query = "SELECT id FROM command_history WHERE client_id = %s ORDER BY write_time DESC LIMIT 1;
+	query = "SELECT id FROM command_history WHERE client_id = %s ORDER BY write_time DESC LIMIT 1;"
 	log_data = (str(sender_id))
 	cur = conn.cursor()
 	cur.execute(query, log_data)
