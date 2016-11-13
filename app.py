@@ -59,9 +59,9 @@ def webhook():
 						postback_text = messaging_event["postback"]["payload"]
 						sender_id = messaging_event["sender"]["id"]
 						if(postback_text == "works"):
-							update_result(send_id, True)
+							update_result(sender_id, True)
 						elif(postback_text == "broken"):
-							update_result(send_id, False)
+							update_result(sender_id, False)
 
 		return "ok", 200
 
