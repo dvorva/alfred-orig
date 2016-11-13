@@ -17,44 +17,48 @@ app = Flask(__name__)
 #https://devcenter.heroku.com/articles/heroku-postgresql    DATABASE_URL
 # terminal: heroku pg:psql
 
-@app.route('/test', methods=['GET'])
+@app.route('/contact_sensor_close', methods=['GET'])
 def groovy_test():
 	log(request)
 
-	params = {
-		"access_token": os.environ["PAGE_ACCESS_TOKEN"]
-	}
-	headers = {
-		"Content-Type": "application/json"
-	}
-	data = json.dumps({
-		"recipient": {
-			"id": 1186606104737968
-		},
-		"message": {
-			"attachment": { #comment out the attachment for non-test mode
-				"type": "template",
-				"payload": {
-					"template_type": "button",
-					"text": "I see you may have just left, should I turn off your lights?",
-					"buttons": [
-						{
-							"type": "postback",
-							"title": "Yes",
-							"payload": "Yes, please turn off the lights"
-						},
-						{
-							"type": "postback",
-							"title": "No",
-							"payload": "Do not turn off lights"
-						}
-					]
+	bulb_response = handle_smartthings_request_get("bulb")
+	color_response = handle_smartthings_request_get("color")
+
+	if bulb_response[1]['value'] == 'on' or color_response[1]['value'] == 'on':
+		params = {
+			"access_token": os.environ["PAGE_ACCESS_TOKEN"]
+		}
+		headers = {
+			"Content-Type": "application/json"
+		}
+		data = json.dumps({
+			"recipient": {
+				"id": 1186606104737968
+			},
+			"message": {
+				"attachment": { #comment out the attachment for non-test mode
+					"type": "template",
+					"payload": {
+						"template_type": "button",
+						"text": "I see you may have just left, should I turn off your lights?",
+						"buttons": [
+							{
+								"type": "postback",
+								"title": "Yes",
+								"payload": "Yes, please turn off the lights"
+							},
+							{
+								"type": "postback",
+								"title": "No",
+								"payload": "Do not turn off lights"
+							}
+						]
+					}
 				}
 			}
-		}
-	})
-	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
-	if r.status_code != 200:
+		})
+		r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+		if r.status_code != 200:
 		log(r.status_code)
 		log(r.text)
 
