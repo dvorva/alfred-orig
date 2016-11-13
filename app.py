@@ -169,7 +169,7 @@ def get_response(input_command, sender_id):
 		handle_smartthings_request_put("bulb/off")
 		return "I've turned your light off."
 
-	elif(classification_code == 2 || classification_code == 9):
+	elif(classification_code == 2 or classification_code == 9):
 		json_response = handle_smartthings_request_get("bulb")
 		if json_response[1]['value'] == 'on':
 			return "Your light is already on."
