@@ -17,6 +17,10 @@ app = Flask(__name__)
 #https://devcenter.heroku.com/articles/heroku-postgresql    DATABASE_URL
 # terminal: heroku pg:psql
 
+@app.route('/test', methods=['GET'])
+def groovy_test():
+	log(requst)
+
 @app.route('/', methods=['GET'])
 def verify():
 	# when the endpoint is registered as a webhook, it must echo back
@@ -31,7 +35,6 @@ def verify():
 
 @app.route('/', methods=['POST'])
 def webhook():
-
 	# endpoint for processing incoming messaging events
 	try:
 		data = request.get_json()
