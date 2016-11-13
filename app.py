@@ -40,8 +40,6 @@ def groovy_test():
         				"payload":"turn off light"
       				},
     				]
-				}
-			}
 		}
 	})
 	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
