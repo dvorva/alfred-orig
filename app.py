@@ -258,7 +258,21 @@ def log_message(sender_id, input_command, classification_code):
 	conn.close()
 
 def update_result(sender_id, success):
-
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+		database=url.path[1:],
+		user=url.username,
+		password=url.password,
+		host=url.hostname,
+		port=url.port
+	)
+	query = "INSERT INTO command_history(client_id, message_content, classified_result) VALUES (%s, %s, %s)"
+	log_data = (str(sender_id), input_command, str(classification_code))
+	cur = conn.cursor()
+	cur.execute(query, log_data)
+	conn.commit()
+	conn.close()
 
 if __name__ == '__main__':
 	app.run(debug=True)
