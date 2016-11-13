@@ -65,6 +65,7 @@ def webhook():
 					if messaging_event.get("optin"):  # optin confirmation
 						pass
 					if messaging_event.get("postback"):
+						log("hello")
 						postback_text = messaging_event["message"]["postback"]
 						log(postback_text)
 		return "ok", 200
