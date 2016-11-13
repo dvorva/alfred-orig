@@ -164,7 +164,7 @@ def get_response(input_command, sender_id):
 			return "Your door is closed."
 		elif str(json_response[0]['value']) == "open":
 			return "Your door is open."
-		return "I should never print this."
+		return "Error, incorrect contact device response."
 	elif(classification_code == 9):
 		son_response = handle_smartthings_request_get("light/30")
 		return "I've done something to color light."
