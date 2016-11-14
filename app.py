@@ -216,17 +216,17 @@ def get_response(input_command, sender_id):
 			else:
 				log("real color")
 				log(int(color.hsl[0]*100))
-				handle_smartthings_request_put("color/" + int(color.hsl[0]*100) + "/" +int(color.hsl[1]*100))
+				handle_smartthings_request_put("color/" + str(int(color.hsl[0]*100)) + "/" + str(int(color.hsl[1]*100)))
 			if(classification_code == 9):
 				return "I've changed your bedroom light color."
 			return "I've turned your bedroom light on."
 
 		elif(room_location == "both"):
 			color = extract_color(sanitized_command)
-			if(not color):
-				handle_smartthings_request_put("color/" + int(color.hsl[0]*100) + "/" +int(color.hsl[1]*100))
-			else:
+			if(color is None):
 				handle_smartthings_request_put("color/0/0")
+			else:
+				handle_smartthings_request_put("color/" + str(int(color.hsl[0]*100)) + "/" + str(int(color.hsl[1]*100)))
 			handle_smartthings_request_put("bulb/on")
 			return "I've turned your lights on."
 
