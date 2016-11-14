@@ -142,14 +142,14 @@ def oauth():
 def handle_smartthings_request_get(endpoint):
 	#GET -H "Authorization: Bearer ACCESS-TOKEN" "https://graph.api.smartthings.com/api/smartapps/endpoints"
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
-	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/a43b9dce-87d7-4ba1-83a1-c6eb8ad49487" + endpoint
+	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/a43b9dce-87d7-4ba1-83a1-c6eb8ad49487/" + endpoint
 	r=requests.get(url, headers={"Authorization":authorization})
 	json_data = json.loads(r.text)
 	return json_data
 
 def handle_smartthings_request_put(endpoint):
 	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
-	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/a43b9dce-87d7-4ba1-83a1-c6eb8ad49487" + endpoint
+	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/a43b9dce-87d7-4ba1-83a1-c6eb8ad49487/" + endpoint
 	r=requests.put(url, headers={"Authorization":authorization})
 	#log(url)
 
