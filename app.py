@@ -214,13 +214,9 @@ def get_response(input_command, sender_id):
 
 		elif(room_location == "bedroom"):
 			color = extract_color(sanitized_command)
-			log(color.hsl)
 			if(color is None):
-				log("not real color")
 				handle_smartthings_request_put("color/0/0")
 			else:
-				log("real color")
-				log(int(color.hsl[0]*100))
 				handle_smartthings_request_put("color/" + str(int(color.hsl[0]*100)) + "/" + str(int(color.hsl[1]*100)))
 			if(classification_code == 9):
 				return "I've changed your bedroom light color."
