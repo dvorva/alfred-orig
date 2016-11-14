@@ -421,13 +421,13 @@ def extract_location(command):
 
 	livingroom_on = False
 	livingroom = ["livingroom", "den", "family room", "living room", "familyroom", "lounge", "sitting room", "sittingroom"]
-	for word in livingroom
+	for word in livingroom:
 		if word in command:
 			livingroom_on = True
 
 	bedroom_on = False
 	bedroom = ["bedroom", "bed room", "bed"]
-	for word in bedroom
+	for word in bedroom:
 		if word in command:
 			bedroom_on = True
 
