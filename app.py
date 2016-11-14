@@ -481,7 +481,7 @@ def send_room_clarification(request_text, sender_id):
                             "type": "postback",
                             "title": "Bedroom",
                             "payload": request_text + " Bedroom"
-                        }
+                        },
                         {
                             "type": "postback",
                             "title": "Both",
