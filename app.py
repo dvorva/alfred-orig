@@ -112,6 +112,10 @@ def webhook():
 							update_result(sender_id, True)
 						elif(postback_text == "broken"):
 							update_result(sender_id, False)
+						else:
+							response = get_response(postback_text, sender_id)
+							if(response != "do not send"):
+								send_message(sender_id, response)
 
 		return "ok", 200
 

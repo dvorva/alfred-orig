@@ -1,0 +1,44 @@
+def send_room_clarification(request_text, sender_id):
+	params = {
+			"access_token": os.environ["PAGE_ACCESS_TOKEN"]
+		}
+		headers = {
+			"Content-Type": "application/json"
+		}
+		data = json.dumps({
+			"recipient": {
+				"id": sender_id
+			},
+			"message": {
+				"attachment": { #comment out the attachment for non-test mode
+					"type": "template",
+					"payload": {
+						"template_type": "button",
+						"text": "Which light did you mean?",
+						"buttons": [
+							{
+								"type": "postback",
+								"title": "Living room",
+								"payload": request_text + " Living room"
+							},
+							{
+								"type": "postback",
+								"title": "Bedroom",
+								"payload": request_text + " Bedroom"
+							}
+							{
+								"type": "postback",
+								"title": "Both",
+								"payload": request_text + " Bedroom Living room"
+							}
+						]
+					}
+				}
+			}
+		})
+		r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+		if r.status_code != 200:
+			log(r.status_code)
+			log(r.text)
+			
+	return "do not send"
