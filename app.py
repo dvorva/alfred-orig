@@ -9,6 +9,7 @@ import psycopg2
 import os
 import urlparse
 import json
+from colour import Color
 
 app = Flask(__name__)
 
@@ -93,7 +94,8 @@ def webhook():
 						if messaging_event["message"].get("text"):
 							message_text = messaging_event["message"]["text"]  # the message's text
 							response = get_response(message_text, sender_id)
-							send_message(sender_id, response)
+							if(response != "do not send"):
+								send_message(sender_id, response)
 					if messaging_event.get("delivery"):  # delivery confirmation
 						pass
 					if messaging_event.get("optin"):  # optin confirmation
@@ -149,6 +151,10 @@ def handle_smartthings_request_put(endpoint):
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
 
+	if(input_command == "party"):
+		party()
+		return "Hope you had fun! :^)"
+
 	# sanitize input
 	sanitized_command = sanitize_input(input_command)
 
@@ -158,31 +164,104 @@ def get_response(input_command, sender_id):
 	# log input
 	log_message(sender_id, input_command, classification_code)
 
+	room_location = extract_location(sanitized_command)
 	# return response
 	if(classification_code == 0):
 		return "Sorry, I don't understand."
 
+	# TURN LIGHT OFF
 	elif(classification_code == 1):
-		json_response = handle_smartthings_request_get("bulb")
-		if json_response[1]['value'] == 'off':
-			return "Your light is already off."
-		handle_smartthings_request_put("bulb/off")
-		return "I've turned your light off."
+		if(room_location == "livingroom"):
+			json_response = handle_smartthings_request_get("bulb")
+			if json_response[1]['value'] == 'off':
+				return "Your living room light is already off."
+			handle_smartthings_request_put("bulb/off")
+			return "I've turned your living room light off."
 
+		elif(room_location == "bedroom"):
+			json_response = handle_smartthings_request_get("color")
+			if json_response[1]['value'] == 'off':
+				return "Your bedroom light is already off."
+			handle_smartthings_request_put("color/off")
+			return "I've turned your bedroom light off."
+
+		elif(room_location == "both"):
+			white_response = handle_smartthings_request_get("bulb")
+			color_response = handle_smartthings_request_get("color")
+			if white_response[1]['value'] == 'off' and color_response[1]['value'] == 'off':
+				return "Your lights are already off."
+
+			handle_smartthings_request_put("bulb/off")
+			handle_smartthings_request_put("color/off")
+			return "I've turned your lights off."
+		else:
+			#ambiguous
+			return send_room_clarification(input_command, sender_id)
+
+	# LIGHT ON or SWITCH COLOR
 	elif(classification_code == 2 or classification_code == 9):
-		json_response = handle_smartthings_request_get("bulb")
-		if json_response[1]['value'] == 'on':
-			return "Your light is already on."
-		handle_smartthings_request_put("bulb/on")
-		return "I've turned your light on."
+		if(room_location == "livingroom"):
+			json_response = handle_smartthings_request_get("bulb")
+			if json_response[1]['value'] == 'on':
+				return "Your living room light is already on."
+			handle_smartthings_request_put("bulb/on")
+			return "I've turned your living room light on."
 
+		elif(room_location == "bedroom"):
+			color = extract_color(sanitized_command)
+			if(not color):
+				handle_smartthings_request_put("color/" + int(color.hsl[0]*100) + "/" +int(color.hsl[1]*100))
+			else:
+				handle_smartthings_request_put("color/0/0")
+			return "I've turned your bedroom light on."
+
+		elif(room_location == "both"):
+			color = extract_color(sanitized_command)
+			if(not color):
+				handle_smartthings_request_put("color/" + int(color.hsl[0]*100) + "/" +int(color.hsl[1]*100))
+			else:
+				handle_smartthings_request_put("color/0/0")
+			handle_smartthings_request_put("bulb/on")
+			return "I've turned your lights on."
+
+		else: #ambiguous
+			return send_room_clarification(input_command, sender_id)
+
+	# DIM LIGHT TODO check state
 	elif(classification_code == 3):
-		handle_smartthings_request_put("bulb/dim")
-		return "Your light is now dimmed to 20%."
+		if(room_location == "livingroom"):
+			handle_smartthings_request_put("bulb/dim")
+			return "Your living room light has been dimmed."
 
+		elif(room_location == "bedroom"):
+			handle_smartthings_request_put("color/dim")
+			return "Your bedroom light has been dimmed."
+
+		elif(room_location == "both"):
+			handle_smartthings_request_put("bulb/dim")
+			handle_smartthings_request_put("color/dim")
+			return "Your lights have been dimmed."
+
+		else:
+			return send_room_clarification(input_command, sender_id)
+
+	# BRIGHTEN LIGHT TODO check state
 	elif(classification_code == 4):
-		handle_smartthings_request_put("bulb/brighten")
-		return "Your light is now brightened to 100%."
+		if(room_location == "livingroom"):
+			handle_smartthings_request_put("bulb/brighten")
+			return "Your living room light has been brightened."
+
+		elif(room_location == "bedroom"):
+			handle_smartthings_request_put("color/brighten")
+			return "Your bedroom light has been brightened."
+
+		elif(room_location == "both"):
+			handle_smartthings_request_put("bulb/brighten")
+			handle_smartthings_request_put("color/brighten")
+			return "Your lights have been brightened."
+
+		else:
+			return send_room_clarification(input_command, sender_id)
 
 	elif(classification_code == 5):
 		json_response = handle_smartthings_request_get("bulb")
@@ -211,9 +290,6 @@ def get_response(input_command, sender_id):
 		elif str(json_response[0]['value']) == "open":
 			return "Your door is open."
 		return "Error, incorrect contact device response."
-	elif(classification_code == 9):
-		json_response = handle_smartthings_request_put("color/30")
-		return "I've done something to color light."
 
 	else:
 		return "Unknown classification code received by model."
@@ -221,7 +297,6 @@ def get_response(input_command, sender_id):
 def send_message(recipient_id, message_text):
 
 	#log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
-
 	params = {
 		"access_token": os.environ["PAGE_ACCESS_TOKEN"]
 	}
@@ -331,6 +406,98 @@ def update_result(sender_id, success):
 	conn.commit()
 	conn.close()
 
+def extract_location(command):
+	'''
+	Input: command (string)
+	Output: if string refers to living room: "livingroom"
+	if string refers to bedroom: "bedroom"
+	if string refers to both: "both"
+	if string refers to neither: "neither"
+	'''
+	bothrooms = ["both", "lights", "all"]
+	for word in bothrooms:
+		if word in command:
+			return "both"
+
+	livingroom_on = False
+	livingroom = ["livingroom", "den", "family room", "living room", "familyroom", "lounge", "sitting room", "sittingroom"]
+	for word in livingroom
+		if word in command:
+			livingroom_on = True
+
+	bedroom_on = False
+	bedroom = ["bedroom", "bed room", "bed"]
+	for word in bedroom
+		if word in command:
+			bedroom_on = True
+
+	if livingroom_on and bedroom_on:
+		return "both"
+	elif livingroom_on:
+		return "livingroom"
+	elif bedroom_on:
+		return "bedroom"
+	else:
+		return "none"
+
+def party():
+    for i in range(0,15):
+        h = random.randint(0,100)
+        s = random.randint(0,100)
+        handle_smartthings_request_put("color/"+str(h)+"/"+str(s))
+
+def extract_color(command):
+   for word in command.split():
+       try:
+           return Color(word)
+       except:
+           pass
+   return None
+
+def send_room_clarification(request_text, sender_id):
+    params = {
+            "access_token": os.environ["PAGE_ACCESS_TOKEN"]
+        }
+        headers = {
+            "Content-Type": "application/json"
+        }
+        data = json.dumps({
+            "recipient": {
+                "id": sender_id
+            },
+            "message": {
+                "attachment": { #comment out the attachment for non-test mode
+                    "type": "template",
+                    "payload": {
+                        "template_type": "button",
+                        "text": "Which light did you mean?",
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Living room",
+                                "payload": request_text + " Living room"
+                            },
+                            {
+                                "type": "postback",
+                                "title": "Bedroom",
+                                "payload": request_text + " Bedroom"
+                            }
+                            {
+                                "type": "postback",
+                                "title": "Both",
+                                "payload": request_text + " Bedroom Living room"
+                            }
+                        ]
+                    }
+                }
+            }
+        })
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
+        if r.status_code != 200:
+            log(r.status_code)
+            log(r.text)
+
+    return "do not send"
 
 if __name__ == '__main__':
 	app.run(debug=True)
