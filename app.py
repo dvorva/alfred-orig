@@ -35,7 +35,7 @@ def groovy_test():
 		}
 		data = json.dumps({
 			"recipient": {
-				"id": 1186606104737968 
+				"id": 1186606104737968
 			},
 			"message": {
 				"attachment": { #comment out the attachment for non-test mode
@@ -295,9 +295,9 @@ def get_response(input_command, sender_id):
 			else:
 				return_string = "Your living room light is off."
 			if color_response[1]['value'] == 'on':
-				return_string = " and your bedroom light is on at " + str(color_response[0]['value']) + "%."
+				return_string += " and your bedroom light is on at " + str(color_response[0]['value']) + "%."
 			else:
-				return_string = " and your bedroom light is off."
+				return_string += " and your bedroom light is off."
 
 			return return_string
 
