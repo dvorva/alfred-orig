@@ -158,9 +158,17 @@ def handle_smartthings_request_put(endpoint):
 def get_response(input_command, sender_id):
 	input_command = input_command.lower()
 
-	if(input_command == "party"):
+	if "party" in input_command:
 		party()
 		return "Hope you had fun! :^)"
+
+	if "go blue" in input_command:
+		wolverine()
+		return "Go Blue!"
+
+	if "sexy" in input_command or "mood" in input_command:
+		sex()
+		return ";)"
 
 	# sanitize input
 	sanitized_command = sanitize_input(input_command)
