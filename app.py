@@ -271,11 +271,36 @@ def get_response(input_command, sender_id):
 			return send_room_clarification(input_command, sender_id)
 
 	elif(classification_code == 5):
-		json_response = handle_smartthings_request_get("bulb")
-		if json_response[1]['value'] == 'on':
-			return "Your light is on at " + str(json_response[0]['value']) + "%."
+		if(room_location == "livingroom"):
+			json_response = handle_smartthings_request_get("bulb")
+			if json_response[1]['value'] == 'on':
+				return "Your living room light is on at " + str(json_response[0]['value']) + "%."
+			else:
+				return "Your living room light is off."
+
+		elif(room_location == "bedroom"):
+			json_response = handle_smartthings_request_get("color")
+			if json_response[1]['value'] == 'on':
+				return "Your bedroom light is on at " + str(json_response[0]['value']) + "%."
+			else:
+				return "Your bedroom light is off."
+		elif(room_location == "both"):
+			white_response = handle_smartthings_request_get("bulb")
+			color_response = handle_smartthings_request_get("color")
+			return_string = ""
+			if white_response[1]['value'] == 'on':
+				return_string = "Your living room light is on at " + str(white_response[0]['value']) + "%"
+			else:
+				return_string = "Your living room light is off."
+			if color_response[1]['value'] == 'on':
+				return_string = " and your bedroom light is on at " + str(color_response[0]['value']) + "%."
+			else:
+				return_string = " and your bedroom light is off."
+
+			return return_string
+
 		else:
-			return "Your light is off."
+			return send_room_clarification(input_command, sender_id)
 
 	elif(classification_code == 6):
 		json_response = handle_smartthings_request_get("cameraMotion")
@@ -452,6 +477,19 @@ def party():
         h = random.randint(0,100)
         s = random.randint(0,100)
         handle_smartthings_request_put("color/"+str(h)+"/"+str(s))
+
+def wolverine():
+    handle_smartthings_request_put("color/brighten")
+    i = 0
+    while(i < 6):
+        handle_smartthings_request_put("color/"+str(16)+"/"+str(100))
+        time.sleep(1)
+        handle_smartthings_request_put("color/"+str(70)+"/"+str(100))
+        i+=1
+
+def sex():
+    handle_smartthings_request_put("color/"+str(100)+"/"+str(95))
+    handle_smartthings_request_put("color/dim")
 
 def extract_color(command):
    for word in command.split():
