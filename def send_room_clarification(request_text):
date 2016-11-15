@@ -1,10 +1,10 @@
 def send_room_clarification(request_text, sender_id):
 	params = {
 			"access_token": os.environ["PAGE_ACCESS_TOKEN"]
-		}
-		headers = {
-			"Content-Type": "application/json"
-		}
+	}
+	headers = {
+		"Content-Type": "application/json"
+	}
 		data = json.dumps({
 			"recipient": {
 				"id": sender_id
@@ -25,7 +25,7 @@ def send_room_clarification(request_text, sender_id):
 								"type": "postback",
 								"title": "Bedroom",
 								"payload": request_text + " Bedroom"
-							}
+							},
 							{
 								"type": "postback",
 								"title": "Both",
@@ -40,5 +40,5 @@ def send_room_clarification(request_text, sender_id):
 		if r.status_code != 200:
 			log(r.status_code)
 			log(r.text)
-			
+
 	return "do not send"
