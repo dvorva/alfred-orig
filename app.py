@@ -35,7 +35,7 @@ def groovy_test():
 		}
 		data = json.dumps({
 			"recipient": {
-				"id": 1186606104737968
+				"id": 1186606104737968 
 			},
 			"message": {
 				"attachment": { #comment out the attachment for non-test mode
@@ -52,7 +52,7 @@ def groovy_test():
 							{
 								"type": "postback",
 								"title": "No",
-								"payload": "Do not turn off lights"
+								"payload": "do not send"
 							}
 						]
 					}
@@ -107,12 +107,14 @@ def webhook():
 						if(postback_text == "Yes, please turn off the lights"):
 							handle_smartthings_request_put("bulb/off")
 							handle_smartthings_request_put("color/off")
-							send_message(sender_id, "Your lights are now off")
-						if(postback_text == "works"):
+							send_message(sender_id, "Your lights are now off.")
+						elif(postback_text == "works"):
 							update_result(sender_id, True)
 						elif(postback_text == "broken"):
 							update_result(sender_id, False)
 						else:
+							if(postback_text == "do not send"):
+								continue
 							response = get_response(postback_text, sender_id)
 							if(response != "do not send"):
 								send_message(sender_id, response)
