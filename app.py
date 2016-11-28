@@ -188,14 +188,14 @@ def get_response(input_command, sender_id):
 
 	# TURN LIGHT OFF
 	elif(classification_code == 1):
-		if(room_location == "livingroom"):
+		if(room_location == "bedroom"):
 			json_response = handle_smartthings_request_get("bulb")
 			if json_response[1]['value'] == 'off':
 				return "Your living room light is already off."
 			handle_smartthings_request_put("bulb/off")
 			return "I've turned your living room light off."
 
-		elif(room_location == "bedroom"):
+		elif(room_location == "livingroom""bedroom"):
 			json_response = handle_smartthings_request_get("color")
 			if json_response[1]['value'] == 'off':
 				return "Your bedroom light is already off."
@@ -217,14 +217,14 @@ def get_response(input_command, sender_id):
 
 	# LIGHT ON or SWITCH COLOR
 	elif(classification_code == 2 or classification_code == 9):
-		if(room_location == "livingroom"):
+		if(room_location == "bedroom"):
 			json_response = handle_smartthings_request_get("bulb")
 			if json_response[1]['value'] == 'on':
 				return "Your living room light is already on."
 			handle_smartthings_request_put("bulb/on")
 			return "I've turned your living room light on."
 
-		elif(room_location == "bedroom"):
+		elif(room_location == "livingroom"):
 			color = extract_color(sanitized_command)
 			if(color is None):
 				handle_smartthings_request_put("color/0/0")
@@ -248,11 +248,11 @@ def get_response(input_command, sender_id):
 
 	# DIM LIGHT TODO check state
 	elif(classification_code == 3):
-		if(room_location == "livingroom"):
+		if(room_location == "bedroom"):
 			handle_smartthings_request_put("bulb/dim")
 			return "Your living room light has been dimmed."
 
-		elif(room_location == "bedroom"):
+		elif(room_location == "livingroom"):
 			handle_smartthings_request_put("color/dim")
 			return "Your bedroom light has been dimmed."
 
@@ -266,11 +266,11 @@ def get_response(input_command, sender_id):
 
 	# BRIGHTEN LIGHT TODO check state
 	elif(classification_code == 4):
-		if(room_location == "livingroom"):
+		if(room_location == "bedroom"):
 			handle_smartthings_request_put("bulb/brighten")
 			return "Your living room light has been brightened."
 
-		elif(room_location == "bedroom"):
+		elif(room_location == "livingroom"):
 			handle_smartthings_request_put("color/brighten")
 			return "Your bedroom light has been brightened."
 
@@ -283,14 +283,14 @@ def get_response(input_command, sender_id):
 			return send_room_clarification(input_command, sender_id)
 
 	elif(classification_code == 5):
-		if(room_location == "livingroom"):
+		if(room_location == "bedroom"):
 			json_response = handle_smartthings_request_get("bulb")
 			if json_response[1]['value'] == 'on':
 				return "Your living room light is on at " + str(json_response[0]['value']) + "%."
 			else:
 				return "Your living room light is off."
 
-		elif(room_location == "bedroom"):
+		elif(room_location == "livingroom"):
 			json_response = handle_smartthings_request_get("color")
 			if json_response[1]['value'] == 'on':
 				return "Your bedroom light is on at " + str(json_response[0]['value']) + "%."
