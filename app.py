@@ -59,6 +59,7 @@ def groovy_test():
 					}
 				}
 			}
+
 		})
 		r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
 		if r.status_code != 200:
@@ -350,27 +351,30 @@ def send_message(recipient_id, message_text):
 		"recipient": {
 			"id": recipient_id
 		},
-		"message": {
-			"attachment": { #comment out the attachment for non-test mode
-				"type": "template",
-				"payload": {
-					"template_type": "button",
-					"text": message_text,
-					"buttons": [
-						{
-							"type": "postback",
-							"title": "Correct response.",
-							"payload": "works"
-						},
-						{
-							"type": "postback",
-							"title": "Incorrect response.",
-							"payload": "broken"
-						}
-					]
-				}
-			}
+		"message":{
+			"text": message_text
 		}
+		#"message": {
+		#	"attachment": { #comment out the attachment for non-test mode
+		#		"type": "template",
+		#		"payload": {
+		#			"template_type": "button",
+		#			"text": message_text,
+		#			"buttons": [
+		#				{
+		#					"type": "postback",
+		#					"title": "Correct response.",
+		#					"payload": "works"
+		#				},
+		#				{
+		#					"type": "postback",
+		#					"title": "Incorrect response.",
+		#					"payload": "broken"
+		#				}
+		#			]
+		#		}
+		#	}
+		#}
 	})
 	r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
 	if r.status_code != 200:
