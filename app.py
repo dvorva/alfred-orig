@@ -536,10 +536,8 @@ def authorize_user(requesting_id):
 	cur = conn.cursor()
 	cur.execute(query)
 	if cur.rowcount:
-		log("success")
 		return "success"
 	else:
-		log("fail")
 		return "failure"
 
 
