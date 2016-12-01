@@ -532,7 +532,7 @@ def authorize_user(requesting_id):
 	    host=url.hostname,
 	    port=url.port
 	)
-	query = "SELECT facebook_id FROM user_household WHERE client_id = " + str(requesting_id) + ";"
+	query = "SELECT facebook_id FROM user_household WHERE facebook_id = " + str(requesting_id) + ";"
 	cur = conn.cursor()
 	cur.execute(query)
 	if cur.rowcount:
