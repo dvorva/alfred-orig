@@ -158,6 +158,13 @@ def handle_smartthings_request_put(endpoint):
 	#log(url)
 
 def get_response(input_command, sender_id):
+
+	authorize_check = authorize_user(sender_id)
+	if authorize_check == "failure":
+		return "You are not authorized to use Alfred."
+	else:
+		log(authorize_check + " testing here")
+
 	input_command = input_command.lower()
 
 	if "party" in input_command:
@@ -513,6 +520,29 @@ def extract_color(command):
        except:
            pass
    return None
+
+
+def authorize_user(requesting_id):
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+	    database=url.path[1:],
+	    user=url.username,
+	    password=url.password,
+	    host=url.hostname,
+	    port=url.port
+	)
+	query = "SELECT facebook_id FROM user_household WHERE client_id = " + str(requesting_id) + ";"
+	cur = conn.cursor()
+	cur.execute(query)
+	if cur.rowcount:
+		log("success")
+		return "success"
+	else:
+		log("fail")
+		return "failure"
+
+
 
 def send_room_clarification(request_text, sender_id):
     params = {
