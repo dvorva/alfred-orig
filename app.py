@@ -540,7 +540,7 @@ def get_name(user_id):
 	cur = conn.cursor()
 	cur.execute(query)
 	record = cur.fetchone()
-	log(record)
+	log(record[0])
 
 	#url = "https://graph.facebook.com/v2.6/" + str(user_id) + "?access_token" +
 	#r=requests.get(url, headers={"Authorization":authorization})
