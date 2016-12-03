@@ -572,7 +572,7 @@ def authorize_user(requesting_id):
 
 # base 64 encoded string (representing image)
 def upload_jpeg_to_s3(image_string):
-	conn = boto.connect_s3(os.environ['AWS_ACCESS_KEY_ID,'], os.environ['AWS_SECRET_ACCESS_KEY'])
+	conn = boto.connect_s3(os.environ['AWS_ACCESS_KEY_ID'], os.environ['AWS_SECRET_ACCESS_KEY'])
 	bucket = conn.create_bucket('alfred-bot', location=boto.s3.connection.Location.DEFAULT)
 	k = Key(bucket)
 	k.set_metadata("Content-Type", "image/jpeg")
