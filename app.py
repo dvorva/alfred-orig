@@ -15,6 +15,7 @@ import time
 import boto
 import boto.s3
 from boto.s3.key import Key
+import base64
 
 app = Flask(__name__)
 
