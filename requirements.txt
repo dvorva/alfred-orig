@@ -12,3 +12,4 @@ scipy==0.13.0
 scikit-learn==0.17.1
 psycopg2==2.6.2
 colour==0.1.2
+boto==2.43.0
