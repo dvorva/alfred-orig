@@ -83,7 +83,6 @@ def verify():
 @app.route('/', methods=['POST'])
 def webhook():
 	# endpoint for processing incoming messaging events
-	log(request)
 	try:
 		data = request.get_json()
 		if data["object"] == "page":
@@ -189,7 +188,12 @@ def get_response(input_command, sender_id):
 	# log input
 	log_message(sender_id, input_command, classification_code)
 
+	# get location of device
 	room_location = extract_location(sanitized_command)
+
+	# get user first name:
+	get_name(sender_id)
+
 	# return response
 	if(classification_code == 0):
 		return "Sorry, I don't understand."
@@ -522,6 +526,28 @@ def extract_color(command):
            pass
    return None
 
+def get_name(user_id):
+	#https://graph.facebook.com/v2.6/<USER_ID>?access_token=PAGE_ACCESS_TOKEN.
+	#first_name, last_name, profile_pic, locale, timezone, gender, is_payment_enabled
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+	    database=url.path[1:],
+	    user=url.username,
+	    password=url.password,
+	    host=url.hostname,
+	    port=url.port
+	)
+	query = "SELECT value FROM globals WHERE key = access_token;"
+	cur = conn.cursor()
+	cur.execute(query)
+	record = cur.fetchone()
+	log(record)
+
+	#url = "https://graph.facebook.com/v2.6/" + str(user_id) + "?access_token" +
+	#r=requests.get(url, headers={"Authorization":authorization})
+	#json_data = json.loads(r.text)
+	#if
 
 def authorize_user(requesting_id):
 	urlparse.uses_netloc.append('postgres')
