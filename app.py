@@ -338,7 +338,7 @@ def get_response(input_command, sender_id):
 	elif(classification_code == 7):
 		send_message(sender_id, "Taking a picture now...")
 		json_response = handle_smartthings_request_get("cameraImage")
-		upload_jpeg_to_s3(json_response[0]['value'])
+		upload_jpeg_to_s3(json_response[0]['value'][0])
 		send_picture_message(sender_id)
 		return "Here is a current picture from your camera."
 
