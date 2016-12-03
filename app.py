@@ -162,8 +162,6 @@ def get_response(input_command, sender_id):
 	authorize_check = authorize_user(sender_id)
 	if authorize_check == "failure":
 		return "You are not authorized to use Alfred."
-	else:
-		log(authorize_check + " testing here")
 
 	input_command = input_command.lower()
 
@@ -538,7 +536,7 @@ def get_name(user_id):
 	    host=url.hostname,
 	    port=url.port
 	)
-	query = "SELECT value FROM globals WHERE key = access_token;"
+	query = "SELECT value FROM globals WHERE key = 'access_token';"
 	cur = conn.cursor()
 	cur.execute(query)
 	record = cur.fetchone()
