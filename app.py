@@ -22,7 +22,7 @@ app = Flask(__name__)
 
 @app.route('/contact_sensor_close', methods=['GET'])
 def groovy_test():
-	log(request)
+	#log(request)
 
 	bulb_response = handle_smartthings_request_get("bulb")
 	color_response = handle_smartthings_request_get("color")
@@ -85,6 +85,7 @@ def webhook():
 	# endpoint for processing incoming messaging events
 	try:
 		data = request.get_json()
+		log(data)
 		if data["object"] == "page":
 			for entry in data["entry"]:
 				for messaging_event in entry["messaging"]:
