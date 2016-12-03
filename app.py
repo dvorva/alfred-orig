@@ -335,7 +335,7 @@ def get_response(input_command, sender_id):
 			return "I have not detected motion recently TODO."
 
 	elif(classification_code == 7):
-		json_response = handle_smartthings_request_get("takePicture")
+		json_response = handle_smartthings_request_get("cameraImage")
 		log(json_response[0]['image'])
 		#send_picture_message(sender_id)
 		return "Here is a current picture from your camera TODO."
