@@ -545,7 +545,8 @@ def get_name(user_id):
 	url = "https://graph.facebook.com/v2.6/" + str(user_id) + "?fields=first_name&access_token=" + record[0]
 	r = requests.get(url)
 	json_data = json.loads(r.text)
-	log(json_data)
+	log(json_data['first_name'])
+	return json_data['first_name']
 
 def authorize_user(requesting_id):
 	urlparse.uses_netloc.append('postgres')
