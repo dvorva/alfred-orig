@@ -540,12 +540,11 @@ def get_name(user_id):
 	cur = conn.cursor()
 	cur.execute(query)
 	record = cur.fetchone()
-	log(record[0])
 
-	#url = "https://graph.facebook.com/v2.6/" + str(user_id) + "?access_token" +
-	#r=requests.get(url, headers={"Authorization":authorization})
-	#json_data = json.loads(r.text)
-	#if
+	url = "https://graph.facebook.com/v2.6/" + str(user_id) + "?access_token" + record[0]
+	r = requests.get(url)
+	json_data = json.loads(r.text)
+	log(json_data)
 
 def authorize_user(requesting_id):
 	urlparse.uses_netloc.append('postgres')
