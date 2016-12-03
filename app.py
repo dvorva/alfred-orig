@@ -83,9 +83,9 @@ def verify():
 @app.route('/', methods=['POST'])
 def webhook():
 	# endpoint for processing incoming messaging events
+	log(request)
 	try:
 		data = request.get_json()
-		log(data)
 		if data["object"] == "page":
 			for entry in data["entry"]:
 				for messaging_event in entry["messaging"]:
