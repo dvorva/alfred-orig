@@ -576,7 +576,8 @@ def upload_jpeg_to_s3(image_string):
 	bucket = conn.create_bucket('alfred-bot', location=boto.s3.connection.Location.DEFAULT)
 	k = Key(bucket)
 	k.set_metadata("Content-Type", "image/jpeg")
-	k.key = "image_capture.jpeg"
+	k.key = "image_capture.jpg"
+	k.content_encoding = "base64"
 	k.set_contents_from_string(image_string)
 
 def send_room_clarification(request_text, sender_id):
