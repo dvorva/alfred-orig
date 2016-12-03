@@ -338,8 +338,8 @@ def get_response(input_command, sender_id):
 	elif(classification_code == 7):
 		json_response = handle_smartthings_request_get("cameraImage")
 		upload_jpeg_to_s3(json_response[0]['value'])
-		#send_picture_message(sender_id)
-		return "Here is a current picture from your camera TODO."
+		send_picture_message(sender_id)
+		return "Here is a current picture from your camera."
 
 	elif(classification_code == 8):
 		json_response = handle_smartthings_request_get("contact")
@@ -415,7 +415,7 @@ def send_picture_message(recipient_id):
 				"type": "image",
 				"payload":{
 					#"url":"http://media.mlive.com/kzgazette_impact/photo/12627792-small.jpg"
-					"url":"https://scontent.xx.fbcdn.net/v/t1.0-9/15027448_1888608944693378_4139724658200573_n.jpg?oh=cca96f3729e407f5d9e0a9a3cb942e53&oe=58D26B09"
+					"url":"https://s3.amazonaws.com/alfred-bot/image_capture.jpg"
 				}
 			}
 		}
