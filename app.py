@@ -577,8 +577,9 @@ def upload_jpeg_to_s3(image_string):
 	k = Key(bucket)
 	k.set_metadata("Content-Type", "image/jpeg")
 	k.key = "image_capture.jpg"
-	k.content_encoding = "base64"
-	k.set_contents_from_string(image_string)
+	#k.content_encoding = "base64"
+	k.set_contents_from_string(base64.b64decode(image_string))
+	k.set_acl('public-read')
 
 def send_room_clarification(request_text, sender_id):
     params = {
