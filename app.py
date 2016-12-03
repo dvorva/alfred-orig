@@ -541,7 +541,8 @@ def get_name(user_id):
 	cur.execute(query)
 	record = cur.fetchone()
 
-	url = "https://graph.facebook.com/v2.6/" + str(user_id) + "?access_token" + record[0]
+	#"https://graph.facebook.com/v2.6/<USER_ID>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=PAGE_ACCESS_TOKEN"
+	url = "https://graph.facebook.com/v2.6/" + str(user_id) + "&fields=first_name?access_token" + record[0]
 	r = requests.get(url)
 	json_data = json.loads(r.text)
 	log(json_data)
