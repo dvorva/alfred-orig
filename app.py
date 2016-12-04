@@ -367,8 +367,9 @@ def get_response(input_command, sender_id):
 		record = cur.fetchone()
 		log(str(record))
 
-		prev_time = time.strptime(record[1], "%Y-%m-%d %H:%M:%S.%f")
-		current_time = time.strptime(str(datetime.datetime.now()), "%Y-%m-%d %H:%M:%S.%f")
+		format = "%Y-%m-%d %H:%M:%S.%f"
+		prev_time = datetime.datetime.strptime(record[1], format)
+		current_time = datetime.datetime.strptime(str(datetime.datetime.now()), format)
 
 		log(current_time - prev_time)
 
