@@ -351,7 +351,23 @@ def get_response(input_command, sender_id):
 			return send_room_clarification(input_command, sender_id)
 
 	elif(classification_code == 6):
-		json_response = handle_smartthings_request_get("cameraMotion")
+		urlparse.uses_netloc.append('postgres')
+		url = urlparse.urlparse(os.environ['DATABASE_URL'])
+		conn = psycopg2.connect(
+		    database=url.path[1:],
+		    user=url.username,
+		    password=url.password,
+		    host=url.hostname,
+		    port=url.port
+		)
+		query = "SELECT * FROM globals where key = 'last_motion_detected'"
+		cur = conn.cursor()
+		cur.execute(query)
+		conn.commit()
+		conn.close()
+		record = cur.fetchone()
+		log(str(rectord))
+
 		if True:
 			return "I detected motion recently TODO."
 		else:
