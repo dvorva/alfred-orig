@@ -278,7 +278,7 @@ def get_response(input_command, sender_id):
 				return response
 			handle_smartthings_request_put("bulb/on")
 			change_livingroom_light_on_reponses = ["Your living room light is now on.", "Howdy {0}, your living room bulb is on.".format(name), "I turned on your living room light!", "{0}, I've turned your living room light on!".format(name)]
-			response = change_bedroom_light_on_reponses[random.randint(0,3)]
+			response = change_livingroom_light_on_reponses[random.randint(0,3)]
 			return response
 
 		elif(room_location == "bedroom"):
@@ -362,22 +362,22 @@ def get_response(input_command, sender_id):
 			json_response = handle_smartthings_request_get("bulb")
 			if json_response[1]['value'] == 'on':
 				livingroom_status_on_reponses = ["Your living room light is on.", "{0}, your living room light is still on.".format(name), "Living room light is on!", "{0}, your living room light is on!".format(name)]
-				response = lights_already_on_reponses[random.randint(0,3)]
+				response = livingroom_status_on_reponses[random.randint(0,3)]
 				return response
 			else:
 				livingroom_status_off_reponses = ["Don't worry, your living room light is off.", "Your living room light is off, {0}.".format(name), "Living room light is off right now!", "{0}, your living room light is switched off!".format(name)]
-				response = lights_already_off_reponses[random.randint(0,3)]
+				response = livingroom_status_off_reponses[random.randint(0,3)]
 				return response
 
 		elif(room_location == "bedroom"):
 			json_response = handle_smartthings_request_get("color")
 			if json_response[1]['value'] == 'on':
 				bedroom_status_on_reponses = ["Your bedroom light is on.", "{0}, your bedroom light is still on.".format(name), "Bedroom light is on!", "{0}, your bedroom light is on!".format(name)]
-				response = lights_already_on_reponses[random.randint(0,3)]
+				response = bedroom_status_on_reponses[random.randint(0,3)]
 				return response
 			else:
 				bedroom_status_off_reponses = ["Don't worry, your bedroom light is off.", "Your bedroom light is off, {0}.".format(name), "Bedroom light is off right now!", "{0}, your bedroom light is switched off!".format(name)]
-				response = lights_already_off_reponses[random.randint(0,3)]
+				response = bedroom_status_off_reponses[random.randint(0,3)]
 				return response
 		elif(room_location == "both"):
 			white_response = handle_smartthings_request_get("bulb")
