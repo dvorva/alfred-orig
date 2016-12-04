@@ -372,14 +372,16 @@ def get_response(input_command, sender_id):
 		current_time = datetime.datetime.strptime(str(datetime.datetime.now()), format)
 
 		log(current_time - prev_time)
+		delta = current_time - prev_time
+		five_minutes = datetime.timedelta(seconds=300)
 
 		conn.commit()
 		conn.close()
 
-		if True:
-			return "I detected motion recently TODO."
+		if delta < five_minutes:
+			return "I detected motion in the last five minutes."
 		else:
-			return "I have not detected motion recently TODO."
+			return "I have not detected motion recently."
 
 
 	elif(classification_code == 7):
