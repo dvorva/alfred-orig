@@ -200,7 +200,7 @@ def get_response(input_command, sender_id):
 
 	if "go blue" in input_command:
 		wolverine()
-		go_blue_reponses = ["I take a pill every day. It's called a steak.", "Who's got it better than us?", "I don't take vacations. I don't get sick. I don't observe major holidays. I'm a jackhammer.", "If you're out of milk, it's OK to substitute Gatorade on your cereal"]
+		go_blue_reponses = ["I take a pill every day. It's called a steak.", "Who's got it better than us?", "I don't take vacations. I don't get sick. I don't observe major holidays. I'm a jackhammer.", "If you're out of milk, it's OK to substitute Gatorade on your cereal."]
 		response = go_blue_reponses[random.randint(0,3)]
 		return response
 
@@ -412,13 +412,11 @@ def get_response(input_command, sender_id):
 		cur.execute(query)
 
 		record = cur.fetchone()
-		log(str(record))
 
 		format = "%Y-%m-%d %H:%M:%S.%f"
 		prev_time = datetime.datetime.strptime(record[1], format)
 		current_time = datetime.datetime.strptime(str(datetime.datetime.now()), format)
 
-		log(current_time - prev_time)
 		delta = current_time - prev_time
 		five_minutes = datetime.timedelta(seconds=300)
 
@@ -681,7 +679,7 @@ def upload_jpeg_to_s3(image_string):
 	k.set_metadata("Content-Type", "image/jpeg")
 	k.key = "image_capture.jpg"
 	#k.content_encoding = "base64"
-	log(image_string)
+	#log(image_string)
 	k.set_contents_from_string(base64.b64decode(image_string))
 	k.set_acl('public-read')
 
