@@ -86,7 +86,7 @@ def handle_motion_detected_event():
 	    port=url.port
 	)
 	query = "UPDATE globals SET value = %s WHERE key ='last_motion_detected'"
-	time_data = (datetime.datetime.now())
+	time_data = (str(datetime.datetime.now()))
 	cur = conn.cursor()
 	cur.execute(query, time_data)
 	conn.commit()
