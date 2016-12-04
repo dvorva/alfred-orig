@@ -195,7 +195,7 @@ def get_response(input_command, sender_id):
 	if "party" in input_command:
 		party()
 		party_reponses = ["No I-I-I-I-I can't stop.", "Hopped off the plane at LAX.", "It's goin' down. I'm yellin' timber!", "Have you ever felt, like a plastic bag?"]
-		response = go_blue_reponses[random.randint(0,3)]
+		response = party_reponses[random.randint(0,3)]
 		return response
 
 	if "go blue" in input_command:
