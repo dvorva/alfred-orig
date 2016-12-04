@@ -237,7 +237,7 @@ def get_response(input_command, sender_id):
 				return response
 			handle_smartthings_request_put("bulb/off")
 			change_livingroom_light_off_reponses = ["Your living room light is out.", "{0}, your living room light is off.".format(name), "I've switched the living room light off!", "{0}, I've turned your living room light off!".format(name)]
-			response = change_bedroom_light_off_reponses[random.randint(0,3)]
+			response = change_livingroom_light_off_reponses[random.randint(0,3)]
 			return response
 
 		elif(room_location == "bedroom"):
