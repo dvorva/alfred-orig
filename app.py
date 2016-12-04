@@ -16,6 +16,7 @@ import boto
 import boto.s3
 from boto.s3.key import Key
 import base64
+import datetime
 
 app = Flask(__name__)
 
@@ -69,6 +70,28 @@ def groovy_test():
 		if r.status_code != 200:
 			log(r.status_code)
 			log(r.text)
+
+	return "ok", 200
+
+
+@app.route('/motion_active', methods=['GET'])
+def handle_motion_detected_event():
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+	    database=url.path[1:],
+	    user=url.username,
+	    password=url.password,
+	    host=url.hostname,
+	    port=url.port
+	)
+	query = "UPDATE globals SET value = %s WHERE key ='last_motion_detected'"
+	time_data = (datetime.datetime.now())
+	cur = conn.cursor()
+	cur.execute(query, log_data)
+	conn.commit()
+	conn.close()
+
 
 	return "ok", 200
 
