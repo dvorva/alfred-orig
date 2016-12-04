@@ -365,7 +365,7 @@ def get_response(input_command, sender_id):
 		cur.execute(query)
 
 		record = cur.fetchone()
-		log(str(rectord))
+		log(str(record))
 
 		conn.commit()
 		conn.close()
