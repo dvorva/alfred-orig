@@ -653,6 +653,7 @@ def get_name(user_id):
 	return json_data['first_name']
 
 def authorize_user(requesting_id):
+	log("Request from: " + str(requesting_id))
 	urlparse.uses_netloc.append('postgres')
 	url = urlparse.urlparse(os.environ['DATABASE_URL'])
 	conn = psycopg2.connect(
