@@ -154,6 +154,10 @@ def webhook():
 		log("ERROR: " + str(e))
 		return "internal server error", 500
 
+@app.route('/privacy', methods=['GET'])
+def privacy():
+	return app.send_static_file('privacy_policy.html')
+
 @app.route('/oauth', methods=['GET'])
 def oauth():
 	log(str(request.args))
@@ -774,6 +778,8 @@ def send_room_clarification(request_text, sender_id):
         log(r.text)
 
     return "do not send"
+
+
 
 if __name__ == '__main__':
 	app.run(debug=True)
