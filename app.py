@@ -172,15 +172,58 @@ def oauth():
 
 def handle_smartthings_request_get(endpoint):
 	#GET -H "Authorization: Bearer ACCESS-TOKEN" "https://graph.api.smartthings.com/api/smartapps/endpoints"
-	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
-	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/1ab6cf47-df4f-4196-be43-f8e210b3ecde/" + endpoint
+
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+	    database=url.path[1:],
+	    user=url.username,
+	    password=url.password,
+	    host=url.hostname,
+	    port=url.port
+	)
+	query = "SELECT value FROM globals WHERE key = 'smartthings_api_token';"
+	cur = conn.cursor()
+	cur.execute(query)
+	record = cur.fetchone()
+	bearer = record[0]
+
+	query = "SELECT value FROM globals WHERE key = 'smartthings_api_key';"
+	cur = conn.cursor()
+	cur.execute(query)
+	record = cur.fetchone()
+	key = record[0]
+
+	authorization = "Bearer " + bearer
+	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/" + key + "/" + endpoint
 	r=requests.get(url, headers={"Authorization":authorization})
 	json_data = json.loads(r.text)
 	return json_data
 
 def handle_smartthings_request_put(endpoint):
-	authorization = "Bearer 4285e326-bb70-47b5-bf2b-02c3462609ae"
-	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/1ab6cf47-df4f-4196-be43-f8e210b3ecde/" + endpoint
+	urlparse.uses_netloc.append('postgres')
+	url = urlparse.urlparse(os.environ['DATABASE_URL'])
+	conn = psycopg2.connect(
+	    database=url.path[1:],
+	    user=url.username,
+	    password=url.password,
+	    host=url.hostname,
+	    port=url.port
+	)
+	query = "SELECT value FROM globals WHERE key = 'smartthings_api_token';"
+	cur = conn.cursor()
+	cur.execute(query)
+	record = cur.fetchone()
+	bearer = record[0]
+
+	query = "SELECT value FROM globals WHERE key = 'smartthings_api_key';"
+	cur = conn.cursor()
+	cur.execute(query)
+	record = cur.fetchone()
+	key = record[0]
+
+	authorization = "Bearer " + bearer
+	url = "https://graph-na02-useast1.api.smartthings.com:443/api/smartapps/installations/" + key + "/" + endpoint
 	r=requests.put(url, headers={"Authorization":authorization})
 	#log(url)
 
