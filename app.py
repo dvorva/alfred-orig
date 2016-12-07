@@ -124,17 +124,16 @@ This Log Data may include information such as your computer's Internet Protocol 
 browser type, browser version, the pages of our Site that you visit, the time and date of your visit,
 the time spent on those pages and other statistics.
 In addition, we may use third party services such as Google Analytics that collect, monitor and
-analyze this …
-The Log Data section is for businesses that use analytics or tracking services in websites or
+analyze this The Log Data section is for businesses that use analytics or tracking services in websites or
 apps, like Google Analytics. For the full disclosure section, create your own Privacy Policy.
 Communications
 We may use your Personal Information to contact you with newsletters, marketing or promotional
-materials and other information that ...
+materials and other information that ..
 The Communications section is for businesses that may contact users via email (email
 newsletters) or other methods.
 Security
 The security of your Personal Information is important to us, but remember that no method of
-transmission over the Internet, or method of electronic storage, is 100% secure. While we strive to
+transmission over the Internet, or method of electronic storage, is 100 percent secure. While we strive to
 use commercially acceptable means to protect your Personal Information, we cannot guarantee its
 absolute security.
 Changes To This Privacy Policy
