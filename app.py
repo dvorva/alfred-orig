@@ -693,7 +693,10 @@ def get_name(user_id):
 	url = "https://graph.facebook.com/v2.6/" + str(user_id) + "?fields=first_name&access_token=" + record[0]
 	r = requests.get(url)
 	json_data = json.loads(r.text)
-	return json_data['first_name']
+	if 'first_name' in json_data:
+		return json_data['first_name']
+	else:
+		return "User"
 
 def authorize_user(requesting_id):
 	log("Request from: " + str(requesting_id))
