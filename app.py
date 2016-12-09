@@ -382,7 +382,7 @@ def get_response(input_command, sender_id):
 				change_bedroom_light_color_reponses = ["I've changed your bedroom light color, enjoy!", "{0}, your bedroom light color has been changed.".format(name), "I've changed your bedroom light color! Good choice!", "{0}, I've changed your bedroom light color!".format(name)]
 				response = change_bedroom_light_color_reponses[random.randint(0,3)]
 				return response
-			change_bedroom_light_on_reponses = ["Your bedroom light is now on.", "{0}, your bedroom light is on.".format(name), "I turned on your bedroom light!", "{0}, I've turned your bedroom light on!"]
+			change_bedroom_light_on_reponses = ["Your bedroom light is now on.", "{0}, your bedroom light is on.".format(name), "I turned on your bedroom light!", "{0}, I've turned your bedroom light on!".format(name)]
 			response = change_bedroom_light_on_reponses[random.randint(0,3)]
 			return response
 
