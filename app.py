@@ -42,7 +42,7 @@ def groovy_test():
 		}
 		data = json.dumps({
 			"recipient": {
-				"id": 976031225857582
+				"id": 1186606104737968
 			},
 			"message": {
 				"attachment": { #comment out the attachment for non-test mode
